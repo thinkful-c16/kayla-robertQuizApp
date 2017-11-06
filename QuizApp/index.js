@@ -116,5 +116,6 @@ function generateHTML() {
 
 // Start the main loop when the web page finishes loading.
 $(function(){
+  handleUserButton();
   handleAnswerSubmitted();
 });

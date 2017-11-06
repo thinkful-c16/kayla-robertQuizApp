@@ -21,6 +21,7 @@ const QUESTIONS = [
 
 const STORE = {
   currentView: 0,
+  currentRadioButtonChoice: 0,
   currentScore: 0,
   lastQuestionAnswered: 0,
 };
@@ -29,34 +30,53 @@ const STORE = {
  * Step 2: Define functions that process user interaction 
  ********************************************************/
 
-//template generators
 
-function renderQuestions() {}
+function respondToUserButton() {
+    //which page are we currently on and what is next?
+
+}
 
 
 /******************************************************** 
- * Step 3: Define functions that do have user interaction 
+ * Step 3: Define event listeners
  ********************************************************/
 //Listen for clicking the user button
 //Listen for clicking on the multiple choice radio button
 //
 
-function handleUserButton() {};
-function handleRadioButtonClicked() {};
+function handleUserButton() {
+    //wait on user to click -->
+    //call the function that does stuff
+    //updates the STORE 
+    //call respondToUserButton(){}
+};
+
+
+function handleRadioButtonClicked() {
+    //wait on user to click 
+    //update the STORE with current radio button choice
+
+};
 
 /******************************************************** 
 * Utility housekeeping functions 
 ********************************************************/
 
-function renderQuizPage()
+function renderQuestions() {
+    //only if the STORE is on pages that show questions
+}
+
+function renderQuizPage() {}
+
+function generateHTML() {}
 
 /******************************************************** 
  * Step 4: Main function which calls all the others 
  ********************************************************/ 
 
-//  function main() {
-    handleUserButton();
-}
+//  function main() {}
+    handleUserButton(){};
+
 
 // Start the main loop when the web page finishes loading.
 $(function(){

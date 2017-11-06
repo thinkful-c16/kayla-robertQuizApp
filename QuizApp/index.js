@@ -6,11 +6,11 @@ Step 1: Define objects & database
 ********************************************************/
 
 const QUESTIONS = [
-  {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},
-  {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},
-  {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},
-  {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},
-  {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},
+  {question: 'Which NBA team did Michael spend the majority of his career?', answer1: 'Chicago Bulls', answer2: 'Washington Wizards', answer3: 'Boston Celtics', answer4: 'Phoenix Suns', answer5: 'Los Angeles Lakers', correct: 1, userChoice: 0},
+  {question: 'What position did he play?', answer1: 'Point guard', answer2: 'Center', answer3: 'Power Forward', answer4: 'Shooting guard', answer5: 'Small Forward', correct: 4 , userChoice: 0},
+  {question: 'Michael made a comeback in 2001. Which NBA team did he play for?', answer1: 'Chicago Bulls', answer2: 'Washington Wizards', answer3: 'Boston Celtics', answer4: 'Phoenix Suns', answer5: 'Los Angeles Lakers', correct: 2, userChoice: 0},
+  {question: 'Which college team did Michael play for?', answer1: 'Duke', answer2: 'USC', answer3: 'North Carolina', answer4: 'University of Maryland', answer5: 'Memphis', correct: 3 , userChoice: 0},
+  {question: 'How tall is Michael?', answer1: '6’1’’', answer2: '6’10’’', answer3: '6’6’’', answer4: '6’3’’', answer5: '6’11’’', correct: 3 , userChoice: 0},
   {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},
   {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},
   {question: '', answer1: '', answer2: '', answer3: '', answer4: '', answer5: '', correct: 0 , userChoice: 0},

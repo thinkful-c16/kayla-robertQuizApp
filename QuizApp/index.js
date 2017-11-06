@@ -21,6 +21,7 @@ const QUESTIONS = [
 
 const STORE = {
   currentView: 0,
+  currentQuestion: 0,
   currentRadioButtonChoice: 0,
   currentScore: 0,
   lastQuestionAnswered: 0,
@@ -32,7 +33,15 @@ const STORE = {
 
 
 function respondToUserButton() {
-    //which page are we currently on and what is next?
+    //Set the currentView and what is next?
+    //if currentView === 0
+      //currentView = 1
+      //call renderQuestions();
+      //call renderQuizPage();
+    //else if currentView === 1
+     //currentView = 2
+    //if currentView === 2
+     //call
 
 }
 
@@ -64,11 +73,22 @@ function handleRadioButtonClicked() {
 
 function renderQuestions() {
     //only if the STORE is on pages that show questions
+      //increment currentQuestion++
+      //generateHTML()
+      //renderQuizPage()
+      //call handleRadioButtonClicked()
+      //call handleUserButton();
 }
 
-function renderQuizPage() {}
+function renderQuizPage() {
+    //generateHTML()
+    //pulls data from STORE
+}
 
-function generateHTML() {}
+function generateHTML() {
+    //what view are we on?
+    //
+}
 
 /******************************************************** 
  * Step 4: Main function which calls all the others 

@@ -102,6 +102,7 @@ const STORE = {
  ********************************************************/
 
 function respondToUserButton() {
+  console.log('`respondToUserButton`ran');
   //Set the currentView and what is next?
   //if currentView === 0
   //currentView = 1
@@ -125,17 +126,18 @@ function respondToUserButton() {
  ********************************************************/
 
 function handleUserButton() {
-  $('.js-submit-button').on('click', function(event) {
+  $('.js-user-button').on('click', function(event) {
+    console.log(STORE.currentView);
+    respondToUserButton();
     console.log('`handleUserButton` ran ');
   });
-  //wait on user to click -->
-  //call the function that does stuff
   //updates the STORE 
   //call respondToUserButton(){}
 }
 
 
 function handleRadioButtonClicked() {
+  console.log('`handleRadioButtonClick` ran');
   //wait on user to click 
   //update the STORE with current radio button choice
 
@@ -146,6 +148,8 @@ function handleRadioButtonClicked() {
 ********************************************************/
 
 function renderQuestions() {
+  console.log('`renderQuestions` ran');
+    
   //only if the STORE is on pages that show questions
   //increment currentQuestion++
   //generateHTML()
@@ -155,6 +159,7 @@ function renderQuestions() {
 }
 
 function renderFeedback() {
+  console.log('`renderFeedback` ran');
   //get current userChoice
   //compare to correctAnswer
   //update currentscore if necessary
@@ -164,17 +169,21 @@ function renderFeedback() {
 }
 
 function renderQuizResults() {
+  console.log('`renderQuizResults` ran');
+    
   //generateHTML() --> loop through questions using map and compare last two fields
   //renderQuizPage
     
 }
 
 function renderQuizPage() {
+  console.log('`renderQuizPage` ran');
   //generateHTML()
   //pulls data from STORE
 }
 
 function generateHTML() {
+  console.log('`generateHTML` ran');
   //what view are we on?
   //
 }

@@ -112,19 +112,17 @@ function renderPage() {
     $('div.js-pageView2HTML').hide();
     $('div.js-pageView3HTML').hide();
     handleUserButton();
-  }
-  
-  if (STORE.currentQuestion === 1) {
-    $('#js-userButton').text('START');    
+  } 
+  if (STORE.currentQuestion === 1){
+    $('#js-userButton').text('ENTER');
     renderQuestions();
     $('div.js-pageView0HTML').hide();
     $('div.js-pageView1HTML').show();
     $('div.js-pageView2HTML').hide();
     $('div.js-pageView3HTML').hide();
+    handleRadioButtonClicked();
     handleUserButton();
-  } else {
-    return;
-  }  
+  }
 }
 
 function pageViewLoop() {
@@ -170,13 +168,15 @@ function handleUserButton() {
 
 function handleRadioButtonClicked() {
   console.log('In the handleRadioButtonClicked() function.');
-  $('.js-answer-choices').on('click',  function(event) {
-    let selectedOption = event.currentTarget;
+  $('.js-radioButton').on('change',  function() {
+    let selectedOption = $('input[name=choices]:checked', '.js-radioButton').val();
     console.log(selectedOption);
-    STORE.currentRadioButtonChoice = selectedOption;
-    console.log(STORE);
+    //STORE.currentRadioButtonChoice = selectedOption;
+    //console.log(STORE);
   });
 }
+
+
 //need to create variables for answer choices to update STORE, otherwise the class name will be the value
 //update the STORE with current radio button choice
 
@@ -279,7 +279,7 @@ function generateHTML() {
     <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
     <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
       <div id='js-screenQuestion'></div>
-      <div class='js-radioButton'>
+      <div class='js-radioButton' name='js-radioButton'>
        <input type='radio' name='choices' value=1>
         <label for='choice1' id='js-choice1'></label><br/>
         

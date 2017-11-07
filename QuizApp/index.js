@@ -158,6 +158,17 @@ function renderQuestions(currentView) {
   //only if the STORE is on pages that show questions
 }
 
+function questionsElements(view, question) {
+  const currentQ = STORE['currentQuestion'];
+  if (view === 2) {
+    return `<p class='js-question-${currentQ}> `
+  }
+}
+
+function startPageElements(){}
+
+function summaryPageElements(){}
+
 function renderFeedback() {
   console.log('`renderFeedback` ran');
   //get current userChoice
@@ -176,7 +187,7 @@ function renderFeedback() {
 
 function renderQuizResults(currentView) {
   console.log('`renderQuizResults` ran');
-    
+  summaryPageElements();
   //generateHTML() --> loop through questions using map and compare last two fields
   //renderQuizPage
     
@@ -184,6 +195,7 @@ function renderQuizResults(currentView) {
 
 function renderQuizPage() {
   console.log('`renderQuizPage` ran');
+  generateHTML();
   //generateHTML()
   //pulls data from STORE
 }

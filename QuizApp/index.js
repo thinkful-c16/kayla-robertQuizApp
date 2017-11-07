@@ -88,8 +88,10 @@ const QUESTIONS = [
     userChoice: 0}];
 
 const STORE = {
-  currentView: 0,
   currentQuestion: 0,
+  userAnswers: [],
+  // See if we can do without the rest.
+  currentView: 0,
   currentRadioButtonChoice: 0,
   currentScore: 0,
   lastQuestionAnswered: 0,
@@ -100,13 +102,37 @@ const STORE = {
  * Step 2: Define functions that process user interaction 
  ********************************************************/
 
+function renderPage() {
+  console.log('In the renderPage() function.');  
+  console.log(STORE.currentQuestion);
+  if (STORE.currentQuestion === 0) {
+    $('#js-userButton').text('START');
+    $('div.js-pageView0HTML').show();
+    $('div.js-pageView1HTML').hide();
+    $('div.js-pageView2HTML').hide();
+    $('div.js-pageView3HTML').hide();
+    handleUserButton();
+  }
+  
+  if (STORE.currentQuestion === 1) {
+    $('#js-userButton').text('START');    
+    renderQuestions();
+    $('div.js-pageView0HTML').hide();
+    $('div.js-pageView1HTML').show();
+    $('div.js-pageView2HTML').hide();
+    $('div.js-pageView3HTML').hide();
+    handleUserButton();
+  }
+  
+}
+
 function pageViewLoop() {
   console.log('In the pageViewLoop() function.');
-    //Set the currentView and what is next?
-    renderQuizPage();
-    // if (STORE.currentView === 0) { // That is, we got here from page 0.
-    //   STORE.currentView = 1;
-    //   renderQuestions();
+    // Set the currentView and what is next?
+    // if (STORE.currentQuestion === 0) {
+    //    renderQuestions();
+    //    renderQuizPage();
+    // }
     // } else if (STORE.currentView === 1) { // That is, we got here from page 1.
     //   //renderQuizPage();
     // }
@@ -130,18 +156,18 @@ function pageViewLoop() {
  ********************************************************/
 
 function handleUserButton() {
+  console.log('In the handleUserButton() function.');
   $('#js-userButton').on('click', function() {
-    console.log(STORE.currentView);
-    respondToUserButton();
   });
+    STORE.currentQuestion++;
+    console.log(STORE.currentQuestion);
   //updates the STORE 
   //call respondToUserButton(){}
 }
 
 
 function handleRadioButtonClicked() {
-
-  console.log('`handleRadioButtonClick` ran');
+  console.log('In the handleRadioButtonClicked() function.');
   $('.js-answer-choices').on('click',  function(event) {
     let selectedOption = event.currentTarget;
     console.log(selectedOption);
@@ -160,7 +186,6 @@ function handleRadioButtonClicked() {
 function renderQuestions() {
   console.log('In the renderQuestions() function.');
     //only if the STORE is on pages that show questions
-    STORE.currentQuestion++;
     $('#js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
     $('#js-choice1').text(QUESTIONS[STORE.currentQuestion-1].answer1);
     $('#js-choice2').text(QUESTIONS[STORE.currentQuestion-1].answer2);
@@ -168,7 +193,6 @@ function renderQuestions() {
     $('#js-choice4').text(QUESTIONS[STORE.currentQuestion-1].answer4);
     $('#js-choice5').text(QUESTIONS[STORE.currentQuestion-1].answer5);
     $('div.js-pageView1HTML').show();
-    renderFeedback();
     //respondToUserButton();
     //call handleRadioButtonClicked()
     //call handleUserButton();
@@ -196,35 +220,36 @@ function renderQuizResults() {
 
 function renderQuizPage() {
   console.log('In the renderQuizPage() function.');
+  console.log(STORE.currentView);
     // Set up the user button, which is always visible.
   switch (STORE.currentView) {
-    case 0: $('#js-userButton').text('START');
-      break;
-    case 1: $('#js-userButton').html('ENTER');
-      break;
-    case 2: $('#js-userButton').html('CONTINUE');
-      break;
-    case 3: $('#js-userButton').html('PLAY AGAIN?');
-      break;
-  }
-
-  // if(STORE.currentView === 0){  // We are in page 0.
-  //   $('div.js-pageView0HTML').show();
-  // } 
-
-  console.log(STORE.currentView);  
-  switch (STORE.currentView) {
-    case 0:
+    case 0: 
+      $('#js-userButton').text('START');
       $('div.js-pageView0HTML').show();
       $('div.js-pageView1HTML').hide();
       $('div.js-pageView2HTML').hide();
       $('div.js-pageView3HTML').hide();
       break;
-    case 1: $('div.js-pageView1HTML').show();
+    case 1: 
+      $('#js-userButton').html('ENTER');
+      $('div.js-pageView0HTML').hide();
+      $('div.js-pageView1HTML').show();
+      $('div.js-pageView2HTML').hide();
+      $('div.js-pageView3HTML').hide();
       break;
-    case 2: $('div.js-pageView2HTML').show();
+    case 2: 
+      $('#js-userButton').html('CONTINUE');
+      $('div.js-pageView0HTML').hide();
+      $('div.js-pageView1HTML').hide();
+      $('div.js-pageView2HTML').show();
+      $('div.js-pageView3HTML').hide();
       break;
-    case 3: $('div.js-pageView3HTML').show();
+    case 3: 
+      $('#js-userButton').html('PLAY AGAIN?');
+      $('div.js-pageView0HTML').hide();
+      $('div.js-pageView1HTML').hide();
+      $('div.js-pageView2HTML').hide();
+      $('div.js-pageView3HTML').show();
       break;
   }
 }
@@ -301,7 +326,7 @@ function generateHTML() {
 function handleQuiz(){
   console.log('In the handleQuiz() function.');
   generateHTML();
-  pageViewLoop();
+  renderPage();
 }
 
 

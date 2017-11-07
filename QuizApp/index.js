@@ -6,7 +6,7 @@ Step 1: Define objects & database
 ********************************************************/
 
 const QUESTIONS = [
-  {question: 'Which NBA team did Michael spend the majority of his career?', answer1: 'Chicago Bulls', answer2: 'Washington Wizards', answer3: 'Boston Celtics', answer4: 'Phoenix Suns', answer5: 'Los Angeles Lakers', correct: 1, userChoice: 0},
+  {question: 'Which NBA team did Michael spend the majority of his career?', answer1: 'Chicago Bulls', answer2: 'Washington Wizards', answer3: 'Boston Celtics', answer4: 'Phoenix Suns', answer5: 'Los Angeles Lakers', correct: 1, userChoice: 3},
   {question: 'What position did he play?', answer1: 'Point guard', answer2: 'Center', answer3: 'Power Forward', answer4: 'Shooting guard', answer5: 'Small Forward', correct: 4 , userChoice: 0},
   {question: 'Michael made a comeback in 2001. Which NBA team did he play for?', answer1: 'Chicago Bulls', answer2: 'Washington Wizards', answer3: 'Boston Celtics', answer4: 'Phoenix Suns', answer5: 'Los Angeles Lakers', correct: 2, userChoice: 0},
   {question: 'Which college team did Michael play for?', answer1: 'Duke', answer2: 'USC', answer3: 'North Carolina', answer4: 'University of Maryland', answer5: 'Memphis', correct: 3 , userChoice: 0},
@@ -19,13 +19,11 @@ const QUESTIONS = [
 
 const STORE = {
   currentView: 0,
-  currentQuestion: 0,
+  currentQuestion: 1,
   currentRadioButtonChoice: 0,
   currentScore: 0,
   lastQuestionAnswered: 0,
-  lastQuestionCorrect: false,
-  quizQuestionsHTML: '',
-  quizSummaryHTML: ''
+  lastQuestionCorrect: false
 };
 
 /******************************************************** 
@@ -85,42 +83,18 @@ function handleRadioButtonClicked() {
 function renderQuestions() {
   console.log('In the renderQuestions() function.');
     //only if the STORE is on pages that show questions
-      STORE.currentQuestion++;
-
-    // Set up Page 1, then hide it.
-
-    STORE.quizQuestionsHTML = `
-      <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
-      <h3>Question ${STORE.currentQuestion} of ${QUESTIONS.length}:</h3>
-        <div class='js-screenQuestion'>${QUESTIONS[STORE.currentQuestion-1].question}</div>
-        <div class='js-radioButton'>
-         <input type='radio' id='choice1' name='choices' value=1>
-          <label for='choice1'>${QUESTIONS[STORE.currentQuestion-1].answer1}</label><br/>
-
-          <input type='radio' id='choice2' name='choices' value=2>
-         <label for='choice1'>${QUESTIONS[STORE.currentQuestion-1].answer2}</label><br/>
-  
-         <input type='radio' id='choice3' name='choices' value=3>
-          <label for='choice1'>${QUESTIONS[STORE.currentQuestion-1].answer3}</label><br/>
-
-         <input type='radio' id='choice4' name='choices' value=4>
-          <label for='choice1'>${QUESTIONS[STORE.currentQuestion-1].answer4}</label><br/>
-
-          <input type='radio' id='choice5' name='choices' value=5>
-          <label for='choice1'>${QUESTIONS[STORE.currentQuestion-1].answer5}</label><br/>
-        </div>
-    <br/>
-    <br/>
-    <br/>
-  `;
-  $('div.js-pageView1HTML').html(STORE.quizQuestionsHTML);
-  $('div.js-pageView1HTML').hide();
-      renderQuizPage();
-      $('div.js-pageView1HTML').show();
-      respondToUserButton();
-
-      //call handleRadioButtonClicked()
-      //call handleUserButton();
+    STORE.currentQuestion++;
+    $('#js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
+    $('#js-choice1').text(QUESTIONS[STORE.currentQuestion-1].answer1);
+    $('#js-choice2').text(QUESTIONS[STORE.currentQuestion-1].answer2);
+    $('#js-choice3').text(QUESTIONS[STORE.currentQuestion-1].answer3);
+    $('#js-choice4').text(QUESTIONS[STORE.currentQuestion-1].answer4);
+    $('#js-choice5').text(QUESTIONS[STORE.currentQuestion-1].answer5);
+    $('div.js-pageView1HTML').show();
+    renderFeedback();
+    //respondToUserButton();
+    //call handleRadioButtonClicked()
+    //call handleUserButton();
 }
 
 function renderFeedback() {
@@ -128,7 +102,10 @@ function renderFeedback() {
     //compare to correctAnswer
     //update currentscore if necessary
     //STORE['correctAnswer'] = userChoice === QUESTIONS[0].userChoice;
-    //renderQuizPage
+    $('#js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
+    $('#js-correctAnswer').text(QUESTIONS[STORE.currentQuestion-1].correct);
+    $('#js-userAnswer').text(QUESTIONS[STORE.currentQuestion-1].userChoice);
+    $('div.js-pageView2HTML').show();
     //call handleUserButton()
 }
 
@@ -151,7 +128,7 @@ function renderQuizPage() {
     case 3: $('#js-userButton').html('PLAY AGAIN?');
       break;
   }
-  generateHTML();
+
   if(STORE.currentView === 0){  // We are in page 0.
     $('div.js-pageView0HTML').show();
   }    
@@ -181,10 +158,53 @@ function generateHTML() {
   <br/>
   <br/>`;
   $('div.js-pageView0HTML').html(quizHeader);
-  //$('div.js-pageView0HTML').hide();
+  $('div.js-pageView0HTML').hide();
 
+  // Set up Page 1, then hide it.
 
+  let quizQuestionsHTML = `
+    <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
+    <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
+      <div id='js-screenQuestion'></div>
+      <div class='js-radioButton'>
+       <input type='radio' name='choices' value=1>
+        <label for='choice1' id='js-choice1'></label><br/>
+        
+        <input type='radio' name='choices' value=2>
+        <label for='choice1' id='js-choice2'></label><br/>
+        
+        <input type='radio' name='choices' value=3>
+        <label for='choice1' id='js-choice3'></label><br/>
+        
+        <input type='radio' name='choices' value=4>
+        <label for='choice1' id='js-choice4'></label><br/>
+        
+        <input type='radio' name='choices' value=5>
+        <label for='choice1' id='js-choice5'></label><br/>
+      </div>
+    <br/>
+    <br/>
+    <br/>
+  `;
+  // NOTE: The question and the five choices will be inserted in the correct places above, in renderQuestions().
+  $('div.js-pageView1HTML').html(quizQuestionsHTML);
+  $('div.js-pageView1HTML').hide();
 
+  // Set up Page 2, then hide it.
+
+  let quizFeedbackHTML = `
+    <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
+    <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
+      <div id='js-feedBackImage'></div>
+      <div id='js-screenQuestion'></div>
+      <div id='js-correctAnswer'></div>
+      <div id='js-userAnswer'></div>
+    <br/>
+    <br/>
+    <br/>
+  `;
+  $('div.js-pageView2HTML').html(quizFeedbackHTML);
+  $('div.js-pageView2HTML').hide();
 }
 
 /******************************************************** 
@@ -194,6 +214,7 @@ function generateHTML() {
 //  function main() {}
 function handleQuiz(){
   console.log('In the handleQuiz() function.');
+  generateHTML();
   handleUserButton();
 }
 

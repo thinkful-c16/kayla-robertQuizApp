@@ -126,10 +126,9 @@ function respondToUserButton() {
  ********************************************************/
 
 function handleUserButton() {
-  $('.js-user-button').on('click', function(event) {
+  $('.js-user-button').on('click', function() {
     console.log(STORE.currentView);
     respondToUserButton();
-    console.log('`handleUserButton` ran ');
   });
   //updates the STORE 
   //call respondToUserButton(){}
@@ -147,20 +146,27 @@ function handleRadioButtonClicked() {
 * Utility housekeeping functions 
 ********************************************************/
 
-function renderQuestions() {
+function renderQuestions(currentView) {
   console.log('`renderQuestions` ran');
-    
+  console.log(STORE['currentView']);
+  const nextQuestion = STORE['currentQuestion']++;
+  console.log(nextQuestion);
+  generateHTML();
+  renderQuizPage();
+  handleRadioButtonClicked();
+  handleUserButton();
   //only if the STORE is on pages that show questions
-  //increment currentQuestion++
-  //generateHTML()
-  //renderQuizPage()
-  //call handleRadioButtonClicked()
-  //call handleUserButton();
 }
 
 function renderFeedback() {
   console.log('`renderFeedback` ran');
   //get current userChoice
+  const userAnswer = QUESTIONS['userChoice'];
+  if (userAnswer === QUESTIONS['correctAnswer']) {
+    STORE.currentScore++;
+  }
+  renderQuizPage();
+  handleUserButton();
   //compare to correctAnswer
   //update currentscore if necessary
   //STORE['correctAnswer'] = userChoice === QUESTIONS[0].userChoice;
@@ -168,7 +174,7 @@ function renderFeedback() {
   //call handleUserButton()
 }
 
-function renderQuizResults() {
+function renderQuizResults(currentView) {
   console.log('`renderQuizResults` ran');
     
   //generateHTML() --> loop through questions using map and compare last two fields

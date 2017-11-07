@@ -7,7 +7,7 @@ Step 1: Define objects & database
 
 const QUESTIONS = [
   {question: 'Which NBA team did Michael spend the majority of his career?', 
-    answer1: 'Chicago Bulls', 
+    answer1: 'Chicago Bulls', //map can loop through and randomize
     answer2: 'Washington Wizards', 
     answer3: 'Boston Celtics', 
     answer4: 'Phoenix Suns', 
@@ -104,6 +104,7 @@ const STORE = {
 function respondToUserButton() {
   console.log('`respondToUserButton`ran');
   //Set the currentView and what is next?
+  //use switch statement on the currentView // wrap questions in one view 
   //if currentView === 0
   //currentView = 1
   //call renderQuestions();
@@ -138,8 +139,7 @@ function handleUserButton() {
 function handleRadioButtonClicked() {
 
   console.log('`handleRadioButtonClick` ran');
-  $('.js-answer-choices').on('click', function(event) {
-    console.log('event');
+  $('.js-answer-choices').on('click',  function(event) {
     let selectedOption = event.currentTarget;
     console.log(selectedOption);
     STORE.currentRadioButtonChoice = selectedOption;
@@ -147,7 +147,6 @@ function handleRadioButtonClicked() {
   });
 }
 //need to create variables for answer choices to update STORE, otherwise the class name will be the value
-//wait on user to click 
 //update the STORE with current radio button choice
 
 
@@ -167,16 +166,6 @@ function renderQuestions(currentView) {
   //only if the STORE is on pages that show questions
 }
 
-function questionsElements(view, question) {
-  const currentQ = STORE['currentQuestion'];
-  if (view === 2) {
-    return `<p class='js-question-${currentQ}> `;
-  }
-}
-
-function startPageElements(){}
-
-function summaryPageElements(){}
 
 function renderFeedback() {
   console.log('`renderFeedback` ran');
@@ -194,9 +183,8 @@ function renderFeedback() {
   //call handleUserButton()
 }
 
-function renderQuizResults(currentView) {
+function renderQuizResults() {
   console.log('`renderQuizResults` ran');
-  summaryPageElements();
   //generateHTML() --> loop through questions using map and compare last two fields
   //renderQuizPage
     
@@ -227,7 +215,6 @@ $(function(){
   handleUserButton();
   handleRadioButtonClicked();
   renderQuestions();
-  renderFeedback();
   renderQuizResults();
   renderQuizPage();
 });

@@ -89,7 +89,7 @@ const QUESTIONS = [
 
 const STORE = {
   currentView: 0,
-  currentQuestion: 1,
+  currentQuestion: 0,
   currentRadioButtonChoice: 0,
   currentScore: 0,
   lastQuestionAnswered: 0,
@@ -100,29 +100,28 @@ const STORE = {
  * Step 2: Define functions that process user interaction 
  ********************************************************/
 
-function respondToUserButton() {
-  console.log('In the respondToUserButton() function.');
+function pageViewLoop() {
+  console.log('In the pageViewLoop() function.');
     //Set the currentView and what is next?
     renderQuizPage();
-    if (STORE.currentView === 0) { // That is, we got here from page 0.
-      STORE.currentView = 1;
-      renderQuestions();
-    } else if (STORE.currentView === 1) { // That is, we got here from page 1.
-      //renderQuizPage();
-    }
+    // if (STORE.currentView === 0) { // That is, we got here from page 0.
+    //   STORE.currentView = 1;
+    //   renderQuestions();
+    // } else if (STORE.currentView === 1) { // That is, we got here from page 1.
+    //   //renderQuizPage();
+    // }
     // else if currentView === 1
       //   currentView = 2
       //   renderFeedback()
     //else if currentView === 2
      //if question===10 then currentView = 3
       //else currentView = 1
-    else if (STORE.currentView === 3) {
-      STORE.currentView = 0;
+    // else if (STORE.currentView === 3) {
+    //   STORE.currentView = 0;
 
-    }
+    //}
       //currentView = 0
       //call renderQuizResults()
-
 
 }
 
@@ -131,7 +130,7 @@ function respondToUserButton() {
  ********************************************************/
 
 function handleUserButton() {
-  $('.js-user-button').on('click', function() {
+  $('#js-userButton').on('click', function() {
     console.log(STORE.currentView);
     respondToUserButton();
   });
@@ -209,11 +208,17 @@ function renderQuizPage() {
       break;
   }
 
-  if(STORE.currentView === 0){  // We are in page 0.
-    $('div.js-pageView0HTML').show();
-  }    
+  // if(STORE.currentView === 0){  // We are in page 0.
+  //   $('div.js-pageView0HTML').show();
+  // } 
+
+  console.log(STORE.currentView);  
   switch (STORE.currentView) {
-    case 0: $('div.js-pageView0HTML').show();
+    case 0:
+      $('div.js-pageView0HTML').show();
+      $('div.js-pageView1HTML').hide();
+      $('div.js-pageView2HTML').hide();
+      $('div.js-pageView3HTML').hide();
       break;
     case 1: $('div.js-pageView1HTML').show();
       break;
@@ -233,6 +238,7 @@ function generateHTML() {
   Michael Jordan<br/>
   quiz!<br/>
   <br/>
+  <img src="jordandunk.jpg" class="js-splash-page-dunk" alt="Michael Jordan dunking the ball from the free throw line">
   <br/>
   <br/>
   <br/>
@@ -295,15 +301,11 @@ function generateHTML() {
 function handleQuiz(){
   console.log('In the handleQuiz() function.');
   generateHTML();
-  handleUserButton();
+  pageViewLoop();
 }
 
 
 // Start the main loop when the web page finishes loading.
 $(function(){
-  handleUserButton();
-  handleRadioButtonClicked();
-  renderQuestions();
-  renderQuizResults();
-  renderQuizPage();
+  handleQuiz();
 });

@@ -89,6 +89,7 @@ const QUESTIONS = [
 
 const STORE = {
   currentQuestion: 0,
+  rightAnswers: [],
   userAnswers: [],
   // See if we can do without the rest.
   currentView: 0,
@@ -122,6 +123,8 @@ function renderPage() {
     $('div.js-pageView3HTML').hide();
     handleRadioButtonClicked();
     handleUserButton();
+    handleAnswersSubmitted();
+    renderFeedback();
   }
 
   if (STORE.currentQuestion === 2){
@@ -138,31 +141,6 @@ function renderPage() {
 
 }
 
-function pageViewLoop() {
-  console.log('In the pageViewLoop() function.');
-    // Set the currentView and what is next?
-    // if (STORE.currentQuestion === 0) {
-    //    renderQuestions();
-    //    renderQuizPage();
-    // }
-    // } else if (STORE.currentView === 1) { // That is, we got here from page 1.
-    //   //renderQuizPage();
-    // }
-    // else if currentView === 1
-      //   currentView = 2
-      //   renderFeedback()
-    //else if currentView === 2
-     //if question===10 then currentView = 3
-      //else currentView = 1
-    // else if (STORE.currentView === 3) {
-    //   STORE.currentView = 0;
-
-    //}
-      //currentView = 0
-      //call renderQuizResults()
-
-}
-
 /******************************************************** 
  * Step 3: Define event listeners
  ********************************************************/
@@ -172,7 +150,6 @@ function handleUserButton() {
   $('#js-userButton').on('click', function() {
     STORE.currentQuestion++;
     $('input[name=choices]').prop('checked', false);
-    console.log(STORE.currentQuestion);
     renderPage();
   });
   //updates the STORE 
@@ -184,7 +161,9 @@ function handleRadioButtonClicked() {
   console.log('In the handleRadioButtonClicked() function.');
   $('.js-radioButton').on('change',  function() {
     let selectedOption = $('input[name=choices]:checked', '.js-radioButton').val();
-    console.log(selectedOption);
+    QUESTIONS[STORE.currentQuestion-1].userChoice = selectedOption;
+    console.log('Selected option is '+selectedOption);
+    console.log(QUESTIONS);
     //STORE.currentRadioButtonChoice = selectedOption;
     //console.log(STORE);
   });
@@ -202,7 +181,7 @@ function handleRadioButtonClicked() {
 function renderQuestions() {
   console.log('In the renderQuestions() function.');
     //only if the STORE is on pages that show questions
-    $('#js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
+    $('.js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
     $('#js-choice1').text(QUESTIONS[STORE.currentQuestion-1].answer1);
     $('#js-choice2').text(QUESTIONS[STORE.currentQuestion-1].answer2);
     $('#js-choice3').text(QUESTIONS[STORE.currentQuestion-1].answer3);
@@ -214,15 +193,76 @@ function renderQuestions() {
     //call handleUserButton();
 }
 
+function handleAnswersSubmitted() {
+  console.log(QUESTIONS[0].userChoice);
+
+    switch (QUESTIONS[STORE.currentQuestion-1].correct) {
+      case 1: {
+        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer1);
+        break;
+      }
+      case 2: {
+        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer2);
+        break;
+      }
+      case 3: {
+        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer3);
+        break;
+      }
+      case 4: {
+        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer4);
+        break;
+      }
+      case 5: {
+        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer5);
+        break;
+      }
+    }
+    console.log(STORE.rightAnswers);
+
+    switch (QUESTIONS[STORE.currentQuestion-1].userChoice) {
+      case 1: {
+        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer1);
+        break;
+      }
+      case 2: {
+        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer2);
+        break;
+      }
+      case 3: {
+        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer3);
+        break;
+      }
+      case 4: {
+        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer4);
+        break;
+      }
+      case 5: {
+        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer5);
+        break;
+      }
+    }
+    console.log(STORE.userAnswers);
+}
 
 function renderFeedback() {
     //get current userChoice
     //compare to correctAnswer
     //update currentscore if necessary
     //STORE['correctAnswer'] = userChoice === QUESTIONS[0].userChoice;
-    $('#js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
-    $('#js-correctAnswer').text(QUESTIONS[STORE.currentQuestion-1].correct);
-    $('#js-userAnswer').text(QUESTIONS[STORE.currentQuestion-1].userChoice);
+    $('div.js-pageView0HTML').hide();
+    $('div.js-pageView1HTML').show();
+    $('div.js-pageView2HTML').hide();
+    $('div.js-pageView3HTML').hide();
+    $('.js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
+    // let rightAnswer = STORE.rightAnswer[STORE.currentQuestion-1];
+    // let userAnswer = STORE.userAnswer[STORE.currentQuestion-1];
+    // console.log(rightAnswer);
+    // console.log(userAnswer);
+
+    
+    // $('#js-correctAnswer').text(QUESTIONS[STORE.currentQuestion-1].correct);
+    // $('#js-userAnswer').text(QUESTIONS[STORE.currentQuestion-1].userChoice);
     $('div.js-pageView2HTML').show();
     //call handleUserButton()
 }
@@ -292,7 +332,7 @@ function generateHTML() {
   let quizQuestionsHTML = `
     <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
     <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
-      <div id='js-screenQuestion'></div>
+      <div class='js-screenQuestion'></div>
       <div class='js-radioButton' name='js-radioButton'>
        <input type='radio' name='choices' value=1>
         <label for='choice1' id='js-choice1'></label><br/>
@@ -323,7 +363,7 @@ function generateHTML() {
     <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
     <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
       <div id='js-feedBackImage'></div>
-      <div id='js-screenQuestion'></div>
+      <div class='js-screenQuestion'></div>
       <div id='js-correctAnswer'></div>
       <div id='js-userAnswer'></div>
     <br/>

@@ -136,11 +136,20 @@ function handleUserButton() {
 
 
 function handleRadioButtonClicked() {
-  console.log('`handleRadioButtonClick` ran');
-  //wait on user to click 
-  //update the STORE with current radio button choice
 
+  console.log('`handleRadioButtonClick` ran');
+  $('.js-answer-choices').on('click', function(event) {
+    console.log('event');
+    let selectedOption = event.currentTarget;
+    console.log(selectedOption);
+    STORE.currentRadioButtonChoice = selectedOption;
+    console.log(STORE);
+  });
 }
+//need to create variables for answer choices to update STORE, otherwise the class name will be the value
+//wait on user to click 
+//update the STORE with current radio button choice
+
 
 /******************************************************** 
 * Utility housekeeping functions 
@@ -161,7 +170,7 @@ function renderQuestions(currentView) {
 function questionsElements(view, question) {
   const currentQ = STORE['currentQuestion'];
   if (view === 2) {
-    return `<p class='js-question-${currentQ}> `
+    return `<p class='js-question-${currentQ}> `;
   }
 }
 

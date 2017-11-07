@@ -34,17 +34,17 @@ const STORE = {
 function respondToUserButton() {
     //Set the currentView and what is next?
     //if currentView === 0
-      //currentView = 1
-      //call renderQuestions();
-      //call renderQuizPage();
-    //else if currentView === 1
-     //currentView = 2
-     //renderFeedback()
+      currentView = 1
+        call renderQuestions();
+        call renderQuizPage();
+    // else if currentView === 1
+      //   currentView = 2
+      //   renderFeedback()
     //else if currentView === 2
      //if question===10 then currentView = 3
       //else currentView = 1
     //else if currentView === 3
-      //currentView = 0
+      //currentView = 1
       //call renderQuizResults()
 
 
@@ -74,7 +74,8 @@ function handleRadioButtonClicked() {
 
 function renderQuestions() {
     //only if the STORE is on pages that show questions
-      //increment currentQuestion++
+      STORE.currentQuestion++;
+      console.log(currentQuestion);
       //generateHTML()
       //renderQuizPage()
       //call handleRadioButtonClicked()

@@ -1,0 +1,31 @@
+Requirements
+
+1 Users start on a screen where they can click a button to start the quiz.
+
+2 Once the game is started, users should be prompted through a series of at least 5 multiple choice questions which they can answer.
+
+question str
+answer 1 str
+answer 2 str
+answer 3 str
+answer 4 str
+answer 5 str
+correct response int
+user response int (0 means no response yet)
+
+
+
+3 Questions are to be asked one after another, and the users should only be able to view one question at a time.
+
+4 Users should not be able to skip questions. [Disable continue button until answer is complete.]
+
+5 When viewing an individual question, users should also be able to see which question they're on (for instance, "7 out of 10") and their current score ("5 correct, 2 incorrect").
+
+6 When users submit an answer to a question, they should first get feedback on if their answer was correct or not.
+
+7 If it's incorrect, they should be shown the correct answer. Then they should be moved along to the next question.
+
+8 After users have completed the final question, they should be shown their overall score and be able to start a new game.
+
+
+

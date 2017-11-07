@@ -123,6 +123,19 @@ function renderPage() {
     handleRadioButtonClicked();
     handleUserButton();
   }
+
+  if (STORE.currentQuestion === 2){
+    $('#js-userButton').text('ENTER');
+    renderQuestions();
+    $('div.js-pageView0HTML').hide();
+    $('div.js-pageView1HTML').show();
+    $('div.js-pageView2HTML').hide();
+    $('div.js-pageView3HTML').hide();
+    handleRadioButtonClicked();
+    handleUserButton();
+  }
+  
+
 }
 
 function pageViewLoop() {
@@ -158,6 +171,7 @@ function handleUserButton() {
   console.log('In the handleUserButton() function.');
   $('#js-userButton').on('click', function() {
     STORE.currentQuestion++;
+    $('input[name=choices]').prop('checked', false);
     console.log(STORE.currentQuestion);
     renderPage();
   });

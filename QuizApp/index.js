@@ -60,7 +60,7 @@ const QUESTIONS = [
     answer3: 'Philadelphia 76ers', 
     answer4: 'Charlotte Bobcats', 
     answer5: 'Chicago Bulls', 
-    correct: 4 , 
+    correct: 4, 
     userChoice: 0},
   {question: 'Which of the following NBA players did NOT appear in the film Space Jam?', 
    answer1: 'Larry Bird', 
@@ -68,7 +68,7 @@ const QUESTIONS = [
    answer3: 'Charles Barkley', 
    answer4: 'Muggsy Bogues', 
    answer5: 'Kobe Bryant', 
-   correct: 5 , 
+   correct: 5, 
    userChoice: 0},
   {question: `What is Michael's career playoff scoring average?`, 
    answer1: '30.12', 
@@ -84,7 +84,7 @@ const QUESTIONS = [
     answer3: '4', 
     answer4: '8', 
     answer5: '3', 
-    correct: 1 , 
+    correct: 1, 
     userChoice: 0}];
 
 const STORE = {

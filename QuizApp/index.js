@@ -122,8 +122,9 @@ function renderPage() {
     $('div.js-pageView2HTML').hide();
     $('div.js-pageView3HTML').hide();
     handleUserButton();
-  }
-  
+  } else {
+    return;
+  }  
 }
 
 function pageViewLoop() {
@@ -158,9 +159,10 @@ function pageViewLoop() {
 function handleUserButton() {
   console.log('In the handleUserButton() function.');
   $('#js-userButton').on('click', function() {
-  });
     STORE.currentQuestion++;
     console.log(STORE.currentQuestion);
+    renderPage();
+  });
   //updates the STORE 
   //call respondToUserButton(){}
 }

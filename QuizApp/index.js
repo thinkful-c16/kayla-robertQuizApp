@@ -94,7 +94,8 @@ const QUESTIONS = [
 const STORE = {
   currentQuestion: 0,
   currentView: 0,
-  currentScore: 0
+  currentScore: 0,
+  radioButtonClicked: false
 };
 
 /******************************************************** 
@@ -264,10 +265,10 @@ function handleUserButton() {
   // console.log('In the handleUserButton() function.');
   $('#js-userButton').on('click', function() {
     $('input[name=choices]').prop('checked', false);
-    console.log(`224 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
-    nextView();
-    console.log(`226 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
-    renderPage();
+    if(!(STORE.currentView===1 && STORE.radioButtonClicked===false)){
+      nextView();
+      renderPage();
+    }
   });
   //updates the STORE 
   //call respondToUserButton(){}
@@ -277,6 +278,7 @@ function handleRadioButtonClicked() {
   // console.log('In the handleRadioButtonClicked() function.');
   $('.js-radioButton').on('change',  function() {
     let selectedOption = $('input[name=choices]:checked', '.js-radioButton').val();
+    if(selectedOption>0) {STORE.radioButtonClicked=true;}
     QUESTIONS[STORE.currentQuestion-1].userChoice = selectedOption;
     console.log(`Selected option is ${selectedOption}, ${QUESTIONS[STORE.currentQuestion-1]['answer'+selectedOption]}`);  
     console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);

@@ -183,15 +183,9 @@ function generateHTML() {
   console.log('In the generateHTML() function.');
 
   // Set up Page 0, then hide it.
-
-  let quizHeader = `<h1>Welcome to our<br/>
-  Michael Jordan<br/>
-  quiz!<br/>
-  <br/>
-  <img src="jordandunk.jpg" class="js-splash-page-dunk" alt="Michael Jordan dunking the ball from the free throw line">
-  <br/>
-  <br/>
-  <br/>
+  // <h1>Welcome to our Michael Jordan quiz!
+  let quizHeader = `
+  <img src="welcome.jpg" class="js-splash-page-dunk" alt="Welcome to our Michael Jordan quiz! Michael Jordan dunking the ball from the free throw line">
   <br/>`;
   $('div.js-pageView0HTML').html(quizHeader);
   $('div.js-pageView0HTML').hide();

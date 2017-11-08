@@ -299,10 +299,19 @@ function nextView() {
     STORE.currentView=2;
   } else if(STORE.currentView===2 && STORE.currentQuestion<QUESTIONS.length) {
     STORE.currentView=1;
+    STORE.radioButtonClicked = false;
     STORE.currentQuestion++;
   } else if(STORE.currentView===2 && STORE.currentQuestion===QUESTIONS.length) {
     STORE.currentView=3;
-  }  
+  } else if(STORE.currentView===3 && STORE.currentQuestion===QUESTIONS.length) {
+    STORE.currentQuestion = 0;
+    STORE.currentView = 0;
+    STORE.currentScore = 0;
+    STORE.radioButtonClicked = false;
+    for(let i=0; i<QUESTIONS.length; i++) {
+      QUESTIONS.userChoice = 0;
+    }
+  }
   // console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
 }
 
@@ -311,8 +320,7 @@ function nextView() {
  * Step 4: Re-render based on the new state of the STORE. 
  ********************************************************/
 
-
-
+// No other functions needed to make this happen.
 
 /******************************************************** 
  * Step 0: Wait for page to load, then begin. Once only.
@@ -327,5 +335,3 @@ $(()=>{
 });
 
 // Render -> User Input (Event Listener) -> State Changes (Update the STORE) -> Re-Render
-
-

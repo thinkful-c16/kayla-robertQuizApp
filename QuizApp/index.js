@@ -102,9 +102,8 @@ Step 1: Render the DOM.
 ********************************************************/
 
 function renderPage() {
-  console.log('In the renderPage() function.');  
-  console.log('Current Question in the STORE is: '+STORE.currentQuestion);
-  console.log(`106 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
+  // console.log('In the renderPage() function.');
+  // console.log(`106 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
   if (STORE.currentQuestion===0) {
     $('#js-userButton').text('START');
     $('div.js-pageView0HTML').show();
@@ -114,35 +113,45 @@ function renderPage() {
   }
 
   if (STORE.currentQuestion>=1 && STORE.currentQuestion<=QUESTIONS.length && STORE.currentView===1){  
-    console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
+    // console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
     $('#js-userButton').text('ENTER');
+    $('.js-currentScore').text(STORE.currentScore);
+    $('.js-currentQuestion').text(STORE.currentQuestion);
     renderQuestions();
-    console.log('Back in the renderPage() function.');  
-    console.log('Current Question in the STORE is: '+STORE.currentQuestion);
+    // console.log('Back in the renderPage() function.');  
+    // console.log('Current Question in the STORE is: '+STORE.currentQuestion);
     $('div.js-pageView0HTML').hide();
     $('div.js-pageView1HTML').show();
     $('div.js-pageView2HTML').hide();
     $('div.js-pageView3HTML').hide();
   }
 
-  // if (STORE.currentQuestion === 2){
-  //   $('#js-userButton').text('ENTER');
-  //   renderQuestions();
-  //   $('div.js-pageView0HTML').hide();
-  //   $('div.js-pageView1HTML').show();
-  //   $('div.js-pageView2HTML').hide();
-  //   $('div.js-pageView3HTML').hide();
-  // }
-
-
-
+  if (STORE.currentQuestion>=1 && STORE.currentQuestion<=QUESTIONS.length && STORE.currentView===2){
+    $('#js-userButton').text('CONTINUE');
+    $('.js-correctAnswer').text(QUESTIONS[STORE.currentQuestion-1]['answer'+QUESTIONS[STORE.currentQuestion-1].correct]);
+    $('.js-userAnswer').html('YOUR ANSWER:<br/>'+QUESTIONS[STORE.currentQuestion-1]['answer'+QUESTIONS[STORE.currentQuestion-1].userChoice]);
+    if(QUESTIONS[STORE.currentQuestion-1].userChoice == QUESTIONS[STORE.currentQuestion-1].correct){
+      STORE.currentScore++;
+      $('.js-feedBackImageRight').show();
+      $('.js-feedBackImageWrong').hide();
+      $('.js-userAnswer').hide();
+    } else {
+      $('.js-feedBackImageRight').hide();
+      $('.js-feedBackImageWrong').show();
+      $('.js-userAnswer').show();     
+    }
+    $('.js-currentScore').text(STORE.currentScore);
+    $('.js-currentQuestion').text(STORE.currentQuestion);
+    $('div.js-pageView0HTML').hide();
+    $('div.js-pageView1HTML').hide();
+    $('div.js-pageView2HTML').show();
+    $('div.js-pageView3HTML').hide();      
+  }
 }
 
 function renderQuestions() {
-  console.log('In the renderQuestions() function.');
+  // console.log('In the renderQuestions() function.');
   //only if the STORE is on pages that show questions
-  $('.js-currentScore').text(STORE.currentScore);
-  $('.js-currentQuestion').text(STORE.currentQuestion);
   $('.js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
   $('#js-choice1').text(QUESTIONS[STORE.currentQuestion-1].answer1);
   $('#js-choice2').text(QUESTIONS[STORE.currentQuestion-1].answer2);
@@ -202,12 +211,13 @@ function generateHTML() {
   // Set up Page 2, then hide it.
 
   let quizFeedbackHTML = `
-    <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
-    <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
-      <div id='js-feedBackImage'></div>
-      <div class='js-screenQuestion'></div>
-      <div id='js-correctAnswer'></div>
-      <div id='js-userAnswer'></div>
+    <div id='js-scoreBox'>Score: <span class='js-currentScore'></span> of ${QUESTIONS.length}</div>
+    <h3>Question <span class='js-currentQuestion'></span> of ${QUESTIONS.length}:</h3>
+    <img src="Right.jpg" class="js-feedBackImageRight" alt="Big green check mark"></div>
+    <img src="Wrong.jpg" class="js-feedBackImageWrong" alt="Big red X"></div>
+    <div class='js-screenQuestion'></div><br/>
+    <div class='js-correctAnswer'></div><br/>
+    <div class='js-userAnswer'><br/></div>
     <br/>
     <br/>
     <br/>
@@ -221,7 +231,7 @@ function generateHTML() {
  ********************************************************/
 
 function handleUserButton() {
-  console.log('In the handleUserButton() function.');
+  // console.log('In the handleUserButton() function.');
   $('#js-userButton').on('click', function() {
     $('input[name=choices]').prop('checked', false);
     console.log(`224 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
@@ -234,7 +244,7 @@ function handleUserButton() {
 }
 
 function handleRadioButtonClicked() {
-  console.log('In the handleRadioButtonClicked() function.');
+  // console.log('In the handleRadioButtonClicked() function.');
   $('.js-radioButton').on('change',  function() {
     let selectedOption = $('input[name=choices]:checked', '.js-radioButton').val();
     QUESTIONS[STORE.currentQuestion-1].userChoice = selectedOption;
@@ -261,7 +271,7 @@ function nextView() {
   } else if(STORE.currentView===2 && STORE.currentQuestion===QUESTIONS.length) {
     STORE.currentView=3;
   }  
-  console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
+  // console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
 }
 
 
@@ -277,7 +287,7 @@ function nextView() {
  ********************************************************/
 
 $(()=>{
-  console.log('Begin the Quiz program.');
+  // console.log('Begin the Quiz program.');
   generateHTML();
   renderPage();
   handleUserButton();

@@ -2,11 +2,11 @@
 'use strict';
 
 /******************************************************** 
-Step 1: Define objects & database 
+ Questions and answers data 
 ********************************************************/
 
 const QUESTIONS = [
-  {question: 'Which NBA team did Michael spend the majority of his career?', 
+  {question: 'On which NBA team did Michael spend the majority of his career?', 
     answer1: 'Chicago Bulls', //map can loop through and randomize
     answer2: 'Washington Wizards', 
     answer3: 'Boston Celtics', 
@@ -87,227 +87,69 @@ const QUESTIONS = [
     correct: 1, 
     userChoice: 0}];
 
+/******************************************************** 
+ All global variables here. 
+********************************************************/
+
 const STORE = {
   currentQuestion: 0,
-  rightAnswers: [],
-  userAnswers: [],
-  // See if we can do without the rest.
   currentView: 0,
-  currentRadioButtonChoice: 0,
-  currentScore: 0,
-  lastQuestionAnswered: 0,
-  lastQuestionCorrect: false
+  currentScore: 0
 };
 
 /******************************************************** 
- * Step 2: Define functions that process user interaction 
- ********************************************************/
+Step 1: Render the DOM. 
+********************************************************/
 
 function renderPage() {
   console.log('In the renderPage() function.');  
-  console.log(STORE.currentQuestion);
-  if (STORE.currentQuestion === 0) {
+  console.log('Current Question in the STORE is: '+STORE.currentQuestion);
+  console.log(`106 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
+  if (STORE.currentQuestion===0) {
     $('#js-userButton').text('START');
     $('div.js-pageView0HTML').show();
     $('div.js-pageView1HTML').hide();
     $('div.js-pageView2HTML').hide();
     $('div.js-pageView3HTML').hide();
-    handleUserButton();
-  } 
-  if (STORE.currentQuestion === 1){
+  }
+
+  if (STORE.currentQuestion>=1 && STORE.currentQuestion<=QUESTIONS.length && STORE.currentView===1){  
+    console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
     $('#js-userButton').text('ENTER');
     renderQuestions();
+    console.log('Back in the renderPage() function.');  
+    console.log('Current Question in the STORE is: '+STORE.currentQuestion);
     $('div.js-pageView0HTML').hide();
     $('div.js-pageView1HTML').show();
     $('div.js-pageView2HTML').hide();
     $('div.js-pageView3HTML').hide();
-    handleRadioButtonClicked();
-    handleUserButton();
-    handleAnswersSubmitted();
-    renderFeedback();
   }
 
-  if (STORE.currentQuestion === 2){
-    $('#js-userButton').text('ENTER');
-    renderQuestions();
-    $('div.js-pageView0HTML').hide();
-    $('div.js-pageView1HTML').show();
-    $('div.js-pageView2HTML').hide();
-    $('div.js-pageView3HTML').hide();
-    handleRadioButtonClicked();
-    handleUserButton();
-  }
-  
+  // if (STORE.currentQuestion === 2){
+  //   $('#js-userButton').text('ENTER');
+  //   renderQuestions();
+  //   $('div.js-pageView0HTML').hide();
+  //   $('div.js-pageView1HTML').show();
+  //   $('div.js-pageView2HTML').hide();
+  //   $('div.js-pageView3HTML').hide();
+  // }
+
+
 
 }
-
-/******************************************************** 
- * Step 3: Define event listeners
- ********************************************************/
-
-function handleUserButton() {
-  console.log('In the handleUserButton() function.');
-  $('#js-userButton').on('click', function() {
-    STORE.currentQuestion++;
-    $('input[name=choices]').prop('checked', false);
-    renderPage();
-  });
-  //updates the STORE 
-  //call respondToUserButton(){}
-}
-
-
-function handleRadioButtonClicked() {
-  console.log('In the handleRadioButtonClicked() function.');
-  $('.js-radioButton').on('change',  function() {
-    let selectedOption = $('input[name=choices]:checked', '.js-radioButton').val();
-    QUESTIONS[STORE.currentQuestion-1].userChoice = selectedOption;
-    console.log('Selected option is '+selectedOption);
-    console.log(QUESTIONS);
-    //STORE.currentRadioButtonChoice = selectedOption;
-    //console.log(STORE);
-  });
-}
-
-
-//need to create variables for answer choices to update STORE, otherwise the class name will be the value
-//update the STORE with current radio button choice
-
-
-/******************************************************** 
-* Utility housekeeping functions 
-********************************************************/
 
 function renderQuestions() {
   console.log('In the renderQuestions() function.');
-    //only if the STORE is on pages that show questions
-    $('.js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
-    $('#js-choice1').text(QUESTIONS[STORE.currentQuestion-1].answer1);
-    $('#js-choice2').text(QUESTIONS[STORE.currentQuestion-1].answer2);
-    $('#js-choice3').text(QUESTIONS[STORE.currentQuestion-1].answer3);
-    $('#js-choice4').text(QUESTIONS[STORE.currentQuestion-1].answer4);
-    $('#js-choice5').text(QUESTIONS[STORE.currentQuestion-1].answer5);
-    $('div.js-pageView1HTML').show();
-    //respondToUserButton();
-    //call handleRadioButtonClicked()
-    //call handleUserButton();
-}
-
-function handleAnswersSubmitted() {
-  console.log(QUESTIONS[0].userChoice);
-
-    switch (QUESTIONS[STORE.currentQuestion-1].correct) {
-      case 1: {
-        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer1);
-        break;
-      }
-      case 2: {
-        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer2);
-        break;
-      }
-      case 3: {
-        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer3);
-        break;
-      }
-      case 4: {
-        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer4);
-        break;
-      }
-      case 5: {
-        STORE.rightAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer5);
-        break;
-      }
-    }
-    console.log(STORE.rightAnswers);
-
-    switch (QUESTIONS[STORE.currentQuestion-1].userChoice) {
-      case 1: {
-        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer1);
-        break;
-      }
-      case 2: {
-        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer2);
-        break;
-      }
-      case 3: {
-        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer3);
-        break;
-      }
-      case 4: {
-        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer4);
-        break;
-      }
-      case 5: {
-        STORE.userAnswers.push(QUESTIONS[STORE.currentQuestion-1].answer5);
-        break;
-      }
-    }
-    console.log(STORE.userAnswers);
-}
-
-function renderFeedback() {
-    //get current userChoice
-    //compare to correctAnswer
-    //update currentscore if necessary
-    //STORE['correctAnswer'] = userChoice === QUESTIONS[0].userChoice;
-    $('div.js-pageView0HTML').hide();
-    $('div.js-pageView1HTML').show();
-    $('div.js-pageView2HTML').hide();
-    $('div.js-pageView3HTML').hide();
-    $('.js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
-    // let rightAnswer = STORE.rightAnswer[STORE.currentQuestion-1];
-    // let userAnswer = STORE.userAnswer[STORE.currentQuestion-1];
-    // console.log(rightAnswer);
-    // console.log(userAnswer);
-
-    
-    // $('#js-correctAnswer').text(QUESTIONS[STORE.currentQuestion-1].correct);
-    // $('#js-userAnswer').text(QUESTIONS[STORE.currentQuestion-1].userChoice);
-    $('div.js-pageView2HTML').show();
-    //call handleUserButton()
-}
-
-function renderQuizResults() {
-  console.log('`renderQuizResults` ran');
-  //generateHTML() --> loop through questions using map and compare last two fields
-  //renderQuizPage
-    
-}
-
-function renderQuizPage() {
-  console.log('In the renderQuizPage() function.');
-  console.log(STORE.currentView);
-    // Set up the user button, which is always visible.
-  switch (STORE.currentView) {
-    case 0: 
-      $('#js-userButton').text('START');
-      $('div.js-pageView0HTML').show();
-      $('div.js-pageView1HTML').hide();
-      $('div.js-pageView2HTML').hide();
-      $('div.js-pageView3HTML').hide();
-      break;
-    case 1: 
-      $('#js-userButton').html('ENTER');
-      $('div.js-pageView0HTML').hide();
-      $('div.js-pageView1HTML').show();
-      $('div.js-pageView2HTML').hide();
-      $('div.js-pageView3HTML').hide();
-      break;
-    case 2: 
-      $('#js-userButton').html('CONTINUE');
-      $('div.js-pageView0HTML').hide();
-      $('div.js-pageView1HTML').hide();
-      $('div.js-pageView2HTML').show();
-      $('div.js-pageView3HTML').hide();
-      break;
-    case 3: 
-      $('#js-userButton').html('PLAY AGAIN?');
-      $('div.js-pageView0HTML').hide();
-      $('div.js-pageView1HTML').hide();
-      $('div.js-pageView2HTML').hide();
-      $('div.js-pageView3HTML').show();
-      break;
-  }
+  //only if the STORE is on pages that show questions
+  $('.js-currentScore').text(STORE.currentScore);
+  $('.js-currentQuestion').text(STORE.currentQuestion);
+  $('.js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
+  $('#js-choice1').text(QUESTIONS[STORE.currentQuestion-1].answer1);
+  $('#js-choice2').text(QUESTIONS[STORE.currentQuestion-1].answer2);
+  $('#js-choice3').text(QUESTIONS[STORE.currentQuestion-1].answer3);
+  $('#js-choice4').text(QUESTIONS[STORE.currentQuestion-1].answer4);
+  $('#js-choice5').text(QUESTIONS[STORE.currentQuestion-1].answer5);
+  $('div.js-pageView1HTML').show();
 }
 
 function generateHTML() {
@@ -330,8 +172,8 @@ function generateHTML() {
   // Set up Page 1, then hide it.
 
   let quizQuestionsHTML = `
-    <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
-    <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
+    <div id='js-scoreBox'>Score: <span class='js-currentScore'></span> of ${QUESTIONS.length}</div>
+    <h3>Question <span class='js-currentQuestion'></span> of ${QUESTIONS.length}:</h3>
       <div class='js-screenQuestion'></div>
       <div class='js-radioButton' name='js-radioButton'>
        <input type='radio' name='choices' value=1>
@@ -375,18 +217,71 @@ function generateHTML() {
 }
 
 /******************************************************** 
- * Step 4: Main function which calls all the others 
- ********************************************************/ 
+ * Step 2: Listen for user interactions.
+ ********************************************************/
 
-//  function main() {}
-function handleQuiz(){
-  console.log('In the handleQuiz() function.');
-  generateHTML();
-  renderPage();
+function handleUserButton() {
+  console.log('In the handleUserButton() function.');
+  $('#js-userButton').on('click', function() {
+    $('input[name=choices]').prop('checked', false);
+    console.log(`224 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
+    nextView();
+    console.log(`226 Question is: ${STORE.currentQuestion}; View is: ${STORE.currentView}.`);
+    renderPage();
+  });
+  //updates the STORE 
+  //call respondToUserButton(){}
+}
+
+function handleRadioButtonClicked() {
+  console.log('In the handleRadioButtonClicked() function.');
+  $('.js-radioButton').on('change',  function() {
+    let selectedOption = $('input[name=choices]:checked', '.js-radioButton').val();
+    QUESTIONS[STORE.currentQuestion-1].userChoice = selectedOption;
+    console.log(`Selected option is ${selectedOption}, ${QUESTIONS[STORE.currentQuestion-1]['answer'+selectedOption]}`);  
+    console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
+    //STORE.currentRadioButtonChoice = selectedOption;
+    //console.log(STORE);
+  });
+}
+
+/******************************************************** 
+ * Step 3: Change the state of the STORE. 
+ ********************************************************/
+
+function nextView() {
+  if(STORE.currentView===0) {
+    STORE.currentView=1;
+    STORE.currentQuestion=1;
+  } else if(STORE.currentView===1 && STORE.currentQuestion<QUESTIONS.length) {
+    STORE.currentView=2;
+  } else if(STORE.currentView===2 && STORE.currentQuestion<QUESTIONS.length) {
+    STORE.currentView=1;
+    STORE.currentQuestion++;
+  } else if(STORE.currentView===2 && STORE.currentQuestion===QUESTIONS.length) {
+    STORE.currentView=3;
+  }  
+  console.log(`Current Question is: ${STORE.currentQuestion}; current View is: ${STORE.currentView}.`);
 }
 
 
-// Start the main loop when the web page finishes loading.
-$(function(){
-  handleQuiz();
+/******************************************************** 
+ * Step 4: Re-render based on the new state of the STORE. 
+ ********************************************************/
+
+
+
+
+/******************************************************** 
+ * Step 0: Wait for page to load, then begin. Once only.
+ ********************************************************/
+
+$(()=>{
+  console.log('Begin the Quiz program.');
+  generateHTML();
+  renderPage();
+  handleUserButton();
+  handleRadioButtonClicked();
 });
+
+// Render -> User Input (Event Listener) -> State Changes (Update the STORE) -> Re-Render

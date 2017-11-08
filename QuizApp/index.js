@@ -130,7 +130,7 @@ function renderPage() {
     $('#js-userButton').text('CONTINUE');
     $('.js-correctAnswer').text(QUESTIONS[STORE.currentQuestion-1]['answer'+QUESTIONS[STORE.currentQuestion-1].correct]);
     $('.js-userAnswer').html('YOUR ANSWER:<br/>'+QUESTIONS[STORE.currentQuestion-1]['answer'+QUESTIONS[STORE.currentQuestion-1].userChoice]);
-    if(QUESTIONS[STORE.currentQuestion-1].userChoice == QUESTIONS[STORE.currentQuestion-1].correct){
+    if(QUESTIONS[STORE.currentQuestion-1].userChoice+'' === QUESTIONS[STORE.currentQuestion-1].correct+''){
       STORE.currentScore++;
       $('.js-feedBackImageRight').show();
       $('.js-feedBackImageWrong').hide();
@@ -145,7 +145,24 @@ function renderPage() {
     $('div.js-pageView0HTML').hide();
     $('div.js-pageView1HTML').hide();
     $('div.js-pageView2HTML').show();
-    $('div.js-pageView3HTML').hide();      
+    $('div.js-pageView3HTML').hide();
+  }
+
+  let listHTML='';
+  for(let i=0; i<QUESTIONS.length; i++) {
+    listHTML+=`<li>${QUESTIONS[i].question}<br/>Answer: ${QUESTIONS[i]['answer'+QUESTIONS[i].correct]}<br/><span class='js-yours'>Yours: ${QUESTIONS[i]['answer'+QUESTIONS[i].userChoice]}</span></li>`;
+  }
+  if(STORE.currentQuestion === QUESTIONS.length && STORE.currentView === 3) {
+    $('#js-userButton').text('PLAY AGAIN?');
+    $('.js-currentScore').text(STORE.currentScore);
+    $('.js-currentQuestion').text(STORE.currentQuestion);
+    $('.js-scorePercent').text((STORE.currentScore/STORE.currentQuestion)*100 + '%');
+    $('.js-evalList').html(listHTML);
+    $('div.js-pageView0HTML').hide();
+    $('div.js-pageView1HTML').hide();
+    $('div.js-pageView2HTML').hide();
+    $('div.js-pageView3HTML').show();
+
   }
 }
 
@@ -224,6 +241,19 @@ function generateHTML() {
   `;
   $('div.js-pageView2HTML').html(quizFeedbackHTML);
   $('div.js-pageView2HTML').hide();
+
+  // Set up Page 3, then hide it.
+
+  let quizWrapup = `
+    <div id='js-scoreBox'>Score: <span class='js-currentScore'></span> of ${QUESTIONS.length}</div>
+    <h3>Question <span class='js-currentQuestion'></span> of ${QUESTIONS.length}:</h3>
+    <h2>Here's how you did:</h2>
+    <h3 class='js-scorePercent'></h3>
+    <ol class='js-evalList'></ol>
+    <br/>
+  `;
+  $('div.js-pageView3HTML').html(quizWrapup);
+  $('div.js-pageView3HTML').hide();
 }
 
 /******************************************************** 
@@ -263,7 +293,7 @@ function nextView() {
   if(STORE.currentView===0) {
     STORE.currentView=1;
     STORE.currentQuestion=1;
-  } else if(STORE.currentView===1 && STORE.currentQuestion<QUESTIONS.length) {
+  } else if(STORE.currentView===1 && STORE.currentQuestion<=QUESTIONS.length) {
     STORE.currentView=2;
   } else if(STORE.currentView===2 && STORE.currentQuestion<QUESTIONS.length) {
     STORE.currentView=1;
@@ -295,3 +325,5 @@ $(()=>{
 });
 
 // Render -> User Input (Event Listener) -> State Changes (Update the STORE) -> Re-Render
+
+

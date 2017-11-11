@@ -4,12 +4,34 @@
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div class = 'js-pageView0HTML'></div> 
-    <div class = 'js-pageView1HTML'></div> 
-    <div class = 'js-pageView2HTML'></div> 
-    <div class = 'js-pageView3HTML'></div>
-    <button type = 'button' id='js-userButton'>START</button>
-    <script src="//code.jquery.com/jquery.min.js"></script>
-    <script type="text/javascript" src="index.js"></script>
-  </body>
+    <header role='banner' class='intro js-intro'>
+      <h1>Michael Jordan Quiz</h1>
+    </header>
+    <main role='main'>
+      <section role='region' class='questions js-questions'>
+        <p>Some question.</p>
+      </section>
+      <section role='region' class='answer-choices js-answer-choices'>
+        <form class'answer-click js-answer-click'>
+          <input type='radio' name='answer' value='Jordan'> Filler<br>
+          <input type='radio' name='answer' value='Jordan'> Filler<br>
+          <input type='radio' name='answer' value='Jordan'> Filler<br>
+          <input type='radio' name='answer' value='Jordan'> Filler<br>
+          <input type='radio' name='answer' value='Jordan'> Filler<br>
+        </form>
+      </section>
+      <section role='region' class='feedback js-feedback'>
+        <p>Sorry, wrong answer!</p>
+      </section>
+      <section role='region' class='score js-score js-questions-remaining'>
+        <p>Question 1 out of 5</p>
+        <p>Current score: 0 out of 5</p>
+      </section>
+      <section role='region' class='outro js-outro'>
+        <p>Play again?</p>
+      </section>
+      <script src="//code.jquery.com/jquery.min.js"></script>
+      <script type="text/javascript" src="index.js"></script>
+    </main>
+    </body>
 </html>

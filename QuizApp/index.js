@@ -6,287 +6,157 @@ Step 1: Define objects & database
 ********************************************************/
 
 const QUESTIONS = [
-  {question: 'Which NBA team did Michael spend the majority of his career?', 
-    answers: ['Chicago Bulls', 'Washington Wizards', 'Boston Celtics', 'Phoenix Suns', 'Los Angeles Lakers'],
-    correctAnswer: 'Chicago Bulls'},
   {question: 'What position did he play?', 
     answers: ['Point guard', 'Center', 'Power Forward', 'Shooting guard', 'Small Forward'], 
     correctAnswer: 'Small Forward'},
-  {question: 'Michael made a comeback in 2001. Which NBA team did he play for?', 
+  {question: 'Jordan made a NBA omeback in 2001. Which team did he play for?', 
     answers: ['Chicago Bulls', 'Washington Wizards', 'Boston Celtics', 'Phoenix Suns', 'Los Angeles Lakers'],
     correctAnswer: 'Washington Wizards'},
-  {question: 'Which college team did Michael play for?', 
-    answers: ['Duke', 'USC', 'University of North Carolina at Chapel Hill', 'University of Maryland', 'Memphis'],
-    correctAnswer: 'University of North Carolina at Chapel Hill'},
-  {question: 'How tall is Michael?', 
-    answers: ['Six One', 'Six Ten', 'Six Six', 'Six Three', 'Six Eleven'],
-    correctAnswer: 'Six Six'},
-  {question: 'In the TV cartoon "ProStars", who co-starred with Michael?', 
-    answers: ['Ken Griffey Jr. & Barry Sanders', 'Penny Hardaway & Shaquille O\'Neal', 'Andre Agassi & Terrell Davis', 'Bo Jackson & Wayne Gretzky', 'Emmitt Smith & Hulk Hogan'],
-    correctAnswer: 'Bo Jackson & Wayne Gretzky'},
   {question: 'In 2010, Michael became majority owner of which NBA team?', 
     answers: ['Oklahoma City Thunder', 'Houston Rockets', 'Philadelphia 76ers', 'Charlotte Bobcats', 'Chicago Bulls'], 
     correctAnswer: 'Charlotte Bobcats'},
   {question: 'Which of the following NBA players did NOT appear in the film Space Jam?', 
     answers: ['Larry Bird', 'Shawn Bradley', 'Charles Barkley', 'Muggsy Bogues', 'Kobe Bryant'],
     correctAnswer: 'Kobe Bryant'},
-  {question: 'What is Michael\'s career playoff scoring average?', 
-    answers: ['30.12', '29.57', '33.45', '35.05', '29.93'],
-    correctAnswer: '33.45'},
   {question: 'How many NBA Championships did Michael have?', 
     answers: ['6', '10', '4', '8', '3'],
-    correctAnswer: '6'}
+    correctAnswer: '6'}];
 
 const STORE = {
-  currentQuestion: 0,
-  userAnswers: [],
+  currentQuestionIndex: 0,
+  userAnswer: [],
   // See if we can do without the rest.
-  currentView: 0,
+  currentView: 'start',
   currentRadioButtonChoice: 0,
   currentScore: 0,
-  lastQuestionAnswered: 0,
-  lastQuestionCorrect: false
+
 };
 
+console.log(STORE.currentQuestionIndex);
 
-/******************************************************** 
- * Step 2: Define functions that process user interaction 
- ********************************************************/
+/**********/
+//STEP 1: RENDER
+//**********/
 
-
-function renderPage() {
-  handleUserButton();
-
-  console.log('In the renderPage() function.');  
-  // console.log(STORE.currentQuestion);
-  if (STORE.currentQuestion === 0) {
-    $('#js-userButton').text('START');
-    $('div.js-pageView0HTML').show();
-    $('div.js-pageView1HTML').hide();
-    $('div.js-pageView2HTML').hide();
-    $('div.js-pageView3HTML').hide();
-    // handleUserButton();
+///function for each state of the app//
+function generateTemplate(currentView, currentQuestionIndex) {
+  console.log('`generateTemplate` ran');
+  if (currentView === 'start') {
+    return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
+    <img src='jordandunk.jpg' alt='Michael Jordan dunking the basketball from free throw line'>
+    <button type ='button' id='js-userButton-start'>START</button>;
+    `;
   }
-  
-  if (STORE.currentQuestion === 1) {
-    $('#js-userButton').text('START');    
-    renderQuestions();
-    $('div.js-pageView0HTML').hide();
-    $('div.js-pageView1HTML').show();
-    $('div.js-pageView2HTML').hide();
-    $('div.js-pageView3HTML').hide();
-    // handleUserButton();
-  } else {
-    return;
-  }  
-}
+  if (currentView === 'questions') {
+    return `<div class='js-questions' 'js-question-item-${currentQuestionIndex}>${QUESTIONS[currentQuestionIndex].question}</div<br>
+    <div class='js-question-answer-choices'>
+      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[0]}>
+      <label for='choice1' id='js-choice1'></label><br/>
+      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[1]}>
+      <label for='choice1' id='js-choice2'></label><br/>
+      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[2]}>
+      <label for='choice1' id='js-choice3'></label><br/>
+      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[3]}>
+      <label for='choice1' id='js-choice4'></label><br/>
+      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[4]}>
+      <label for='choice1' id='js-choice5'></label><br/>
+      <div><button type='button' id='js-userButton-submit'>Submit Answer</button>;
+    </div>Question ${currentQuestionIndex+1} of ${QUESTIONS.length}</div>
+    <div>${QUESTIONS.correctAnswer}</div>
+    `;
+  }
+  if (STORE.currentView === 'results') {
+    return `<div class='js-results'>Blank</div>
+    `;
 
-function pageViewLoop() {
-  console.log('In the pageViewLoop() function.');
-  // Set the currentView and what is next?
-  // if (STORE.currentQuestion === 0) {
-  //    renderQuestions();
-  //    renderQuizPage();
-  // }
-  // } else if (STORE.currentView === 1) { // That is, we got here from page 1.
-  //   //renderQuizPage();
-  // }
-  // else if currentView === 1
-  //   currentView = 2
-  //   renderFeedback()
-  //else if currentView === 2
-  //if question===10 then currentView = 3
-  //else currentView = 1
-  // else if (STORE.currentView === 3) {
-  //   STORE.currentView = 0;
-
-  //}
-  //currentView = 0
-  //call renderQuizResults()
-
-}
-
-/******************************************************** 
- * Step 3: Define event listeners
- ********************************************************/
-
-
-function handleUserButton() {
-  console.log('In the handleUserButton() function.');
-  $('#js-userButton').on('click', function() {
-    const questionCounter = STORE.currentQuestion++;
-    renderPage();
-  });
-  //updates the STORE 
-  //call respondToUserButton(){}
+  }
 }
 
 
-function handleRadioButtonClicked() {
-  console.log('In the handleRadioButtonClicked() function.');
-  $('.js-answer-choices').on('click',  function(event) {
-    let selectedOption = event.currentTarget;
-    console.log(selectedOption);
-    STORE.currentRadioButtonChoice = selectedOption;
+
+function renderQuiz() {}
+$('.js-quiz-container').html(generateTemplate('questions',0));
+
+
+/**********/
+//STEP 2: EVENT LISTENERS(USER INPUT)
+/*********/
+
+function handleQuizStart() {
+  STORE.currentView = 'start';
+  $('.js-quiz-container').on('click', '#js-userButton-start', function(event) {
+    console.log('`handleQuizStart` ran');
+    STORE.currentView = 'questions';
     console.log(STORE);
+    renderQuiz();
+  });
+
+}
+
+function handleAnswerSubmitted() {
+  $('.js-quiz-container').on('click', '#js-userButton-submit', function(event) {
+    const answer = $('input[name=choices]:checked').val();
+    STORE.userAnswer.push(answer);
+    checkAnswer(answer);
+    $('input[type=radio]').prop('checked',false);
+    STORE.currentQuestionIndex++;
+    changeView('questions');
+  });
+  renderQuiz();
+}
+
+
+/***************/
+//STEP 3: STATE CHANGE FUNCTIONS(STORE)
+/**************/
+
+
+function getQuestionIndex() {
+  const questionIndex = QUESTIONS.map(function(question, index) {
+    console.log(question.question, index);
   });
 }
-//need to create variables for answer choices to update STORE, otherwise the class name will be the value
-//update the STORE with current radio button choice
 
+console.log(getQuestionIndex);
 
-/******************************************************** 
-* Utility housekeeping functions 
-********************************************************/
+// value['question']);
+// generateTemplate(questionIndex);
+// {
+//   generateTemplate(question, currentQuestionIndex); 
+// });
 
-function renderQuestions() {
-  console.log('In the renderQuestions() function.');
-  //only if the STORE is on pages that show questions
-  $('#js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
-  $('#js-choice1').text(QUESTIONS[STORE.currentQuestion-1].answer1);
-  $('#js-choice2').text(QUESTIONS[STORE.currentQuestion-1].answer2);
-  $('#js-choice3').text(QUESTIONS[STORE.currentQuestion-1].answer3);
-  $('#js-choice4').text(QUESTIONS[STORE.currentQuestion-1].answer4);
-  $('#js-choice5').text(QUESTIONS[STORE.currentQuestion-1].answer5);
-  $('div.js-pageView1HTML').show();
-  //respondToUserButton();
-  //call handleRadioButtonClicked()
-  //call handleUserButton();
+  
+// function getAnswerIndex() {
+//   const answers = QUESTIONS[currentQuestionIndex].answers.map(value => value)
+//   }
+//   return answers;
+//   //access currentQuestionIndex.answers is an array
+// //map and return the label and input
+// //${QUESTIONS[currentQuestionIndex].answers
+// }
+
+function changeView(view) {
+  STORE.currentView = view;
+  //grab from event handler
 }
 
+function renderQuestions(){}
 
-function renderFeedback() {
-  //get current userChoice
-  //compare to correctAnswer
-  //update currentscore if necessary
-  //STORE['correctAnswer'] = userChoice === QUESTIONS[0].userChoice;
-  $('#js-screenQuestion').text(QUESTIONS[STORE.currentQuestion-1].question);
-  $('#js-correctAnswer').text(QUESTIONS[STORE.currentQuestion-1].correct);
-  $('#js-userAnswer').text(QUESTIONS[STORE.currentQuestion-1].userChoice);
-  $('div.js-pageView2HTML').show();
-  //call handleUserButton()
+function checkAnswer(userAnswer){
+  //if userAnswer === QUESTIONS.correctAnswer, 
+  // const correctAnswer = QUESTIONS.map(function(answer, index))
 }
 
-function renderQuizResults() {
-  console.log('`renderQuizResults` ran');
-  //generateHTML() --> loop through questions using map and compare last two fields
-  //renderQuizPage
-    
+function renderFinalResult() {}
+
+function renderStart() {}
+
+//**********/
+//STEP 0: INITIALIZATION
+//*********/
+
+function main() {
+  handleQuizStart();
 }
 
-function renderQuizPage() {
-  console.log('In the renderQuizPage() function.');
-  console.log(STORE.currentView);
-  // Set up the user button, which is always visible.
-  switch (STORE.currentView) {
-  case 0: 
-    $('#js-userButton').text('START');
-    $('div.js-pageView0HTML').show();
-    $('div.js-pageView1HTML').hide();
-    $('div.js-pageView2HTML').hide();
-    $('div.js-pageView3HTML').hide();
-    break;
-  case 1: 
-    $('#js-userButton').html('ENTER');
-    $('div.js-pageView0HTML').hide();
-    $('div.js-pageView1HTML').show();
-    $('div.js-pageView2HTML').hide();
-    $('div.js-pageView3HTML').hide();
-    break;
-  case 2: 
-    $('#js-userButton').html('CONTINUE');
-    $('div.js-pageView0HTML').hide();
-    $('div.js-pageView1HTML').hide();
-    $('div.js-pageView2HTML').show();
-    $('div.js-pageView3HTML').hide();
-    break;
-  case 3: 
-    $('#js-userButton').html('PLAY AGAIN?');
-    $('div.js-pageView0HTML').hide();
-    $('div.js-pageView1HTML').hide();
-    $('div.js-pageView2HTML').hide();
-    $('div.js-pageView3HTML').show();
-    break;
-  }
-}
-
-function generateHTML() {
-  console.log('In the generateHTML() function.');
-
-  // Set up Page 0, then hide it.
-
-  let quizHeader = `<h1>Welcome to our<br/>
-  Michael Jordan<br/>
-  quiz!<br/>
-  <br/>
-  <img src="jordandunk.jpg" class="js-splash-page-dunk" alt="Michael Jordan dunking the ball from the free throw line">
-  <br/>
-  <br/>
-  <br/>
-  <br/>`;
-  $('div.js-pageView0HTML').html(quizHeader);
-  $('div.js-pageView0HTML').hide();
-
-  // Set up Page 1, then hide it.
-
-  let quizQuestionsHTML = `
-    <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
-    <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
-      <div id='js-screenQuestion'></div>
-      <div class='js-radioButton'>
-       <input type='radio' name='choices' value=1>
-        <label for='choice1' id='js-choice1'></label><br/>
-        
-        <input type='radio' name='choices' value=2>
-        <label for='choice1' id='js-choice2'></label><br/>
-        
-        <input type='radio' name='choices' value=3>
-        <label for='choice1' id='js-choice3'></label><br/>
-        
-        <input type='radio' name='choices' value=4>
-        <label for='choice1' id='js-choice4'></label><br/>
-        
-        <input type='radio' name='choices' value=5>
-        <label for='choice1' id='js-choice5'></label><br/>
-      </div>
-    <br/>
-    <br/>
-    <br/>
-  `;
-  // NOTE: The question and the five choices will be inserted in the correct places above, in renderQuestions().
-  $('div.js-pageView1HTML').html(quizQuestionsHTML);
-  $('div.js-pageView1HTML').hide();
-
-  // Set up Page 2, then hide it.
-
-  let quizFeedbackHTML = `
-    <div id='js-scoreBox'>Score: ${STORE.currentScore} of ${QUESTIONS.length}</div>
-    <h3>Question ${STORE.currentQuestion+1} of ${QUESTIONS.length}:</h3>
-      <div id='js-feedBackImage'></div>
-      <div id='js-screenQuestion'></div>
-      <div id='js-correctAnswer'></div>
-      <div id='js-userAnswer'></div>
-    <br/>
-    <br/>
-    <br/>
-  `;
-  $('div.js-pageView2HTML').html(quizFeedbackHTML);
-  $('div.js-pageView2HTML').hide();
-}
-
-/******************************************************** 
- * Step 4: Main function which calls all the others 
- ********************************************************/ 
-
-//  function main() {}
-function handleQuiz(){
-  console.log('In the handleQuiz() function.');
-  generateHTML();
-  renderPage();
-}
-
-
-// Start the main loop when the web page finishes loading.
-$(function(){
-  handleQuiz();
-});
+$(main);

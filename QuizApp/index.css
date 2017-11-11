@@ -15,12 +15,12 @@ h1 {
     text-align: center;
     max-width: 100%;
 }
-
+/* 
 button {
-    width: 200px;
-    height: 50px;
+    width: 100px;
+    height: 20px;
     font-size: 20px;
-    text-align: center;
+    /* text-align: center;
     position: relative;
-    left: 300px;
-}
+    left: 300px; */
+} */

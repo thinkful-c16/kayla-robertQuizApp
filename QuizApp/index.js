@@ -23,28 +23,68 @@ const QUESTIONS = [
     correctAnswer: '6'}];
 
 const STORE = {
-  currentQuestionIndex: 0,
+  currentQuestionIndex: null,
   userAnswer: [],
-  // See if we can do without the rest.
   currentView: 'start',
-  currentRadioButtonChoice: 0,
   currentScore: 0,
 
 };
-
-console.log(STORE.currentQuestionIndex);
 
 /**********/
 //STEP 1: RENDER
 //**********/
 
-///function for each state of the app//
+function render() {
+  if (STORE.currentView === 'start') {
+    $('.intro').show();
+    $('.questions').hide();
+    $('.feedback').hide();
+    $('.score').hide();
+    $('.outro').hide();
+
+  } 
+  else if (STORE.currentView === 'questions') {
+    $('.intro').hide();
+    $('.questions').show();
+    $('.feedback').hide();
+    $('.score').show();
+    $('.outro').hide();
+
+  }
+  else if (STORE.currentView === 'feedback') {
+    $('.intro').hide();
+    $('.questions').show();
+    $('.feedback').show();
+    $('.score').show();
+    $('.outro').hide();
+
+  } else if (STORE.currentView === 'results') {
+    $('.intro').hide();
+    $('.questions').hide();
+    $('.feedback').hide();
+    $('.score').hide();
+    $('.outro').show();
+  }
+}
+
+  //render with appropriate HTML elements based on currentView
+  //if 'intro'
+  //if 'questions' then questions
+  //if 'feeback' then feedback
+//   $('main').html(generateTemplate('questions'));
+
+// }
+
+/*****/
+//Template generators//
+/*** */
+
 function generateTemplate(currentView, currentQuestionIndex) {
   console.log('`generateTemplate` ran');
   if (currentView === 'start') {
     return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
     <img src='jordandunk.jpg' alt='Michael Jordan dunking the basketball from free throw line'>
-    <button type ='button' id='js-userButton-start'>START</button>;
+    <input type='button' value='Start Quiz'>;
     `;
   }
   if (currentView === 'questions') {
@@ -60,49 +100,45 @@ function generateTemplate(currentView, currentQuestionIndex) {
       <label for='choice1' id='js-choice4'></label><br/>
       <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[4]}>
       <label for='choice1' id='js-choice5'></label><br/>
-      <div><button type='button' id='js-userButton-submit'>Submit Answer</button>;
+      <div><<input type='button' value='Enter'>;
     </div>Question ${currentQuestionIndex+1} of ${QUESTIONS.length}</div>
     <div>${QUESTIONS.correctAnswer}</div>
     `;
   }
-  if (STORE.currentView === 'results') {
-    return `<div class='js-results'>Blank</div>
+  if (STORE.currentView === 'questions') {
+    return `<div class='js-feedback'<p>Sorry, wrong answer!</p></div>
     `;
 
   }
 }
-
-
-
-function renderQuiz() {}
-$('.js-quiz-container').html(generateTemplate('questions',0));
-
 
 /**********/
 //STEP 2: EVENT LISTENERS(USER INPUT)
 /*********/
 
 function handleQuizStart() {
-  STORE.currentView = 'start';
-  $('.js-quiz-container').on('click', '#js-userButton-start', function(event) {
+  changeView('start');
+  $('.js-userButton').on('click', '.js-the-button', function(e) {
+    e.preventDefault();
     console.log('`handleQuizStart` ran');
-    STORE.currentView = 'questions';
-    console.log(STORE);
-    renderQuiz();
+    changeView('questions');
+    // console.log(STORE);
+    render();
   });
 
 }
 
 function handleAnswerSubmitted() {
-  $('.js-quiz-container').on('click', '#js-userButton-submit', function(event) {
+  $('.js-userButton').on('click', '.js-the-button', function(e) {
+    e.preventDefault();
     const answer = $('input[name=choices]:checked').val();
     STORE.userAnswer.push(answer);
     checkAnswer(answer);
     $('input[type=radio]').prop('checked',false);
     STORE.currentQuestionIndex++;
     changeView('questions');
+    render();    
   });
-  renderQuiz();
 }
 
 
@@ -147,16 +183,15 @@ function checkAnswer(userAnswer){
   // const correctAnswer = QUESTIONS.map(function(answer, index))
 }
 
-function renderFinalResult() {}
-
-function renderStart() {}
-
 //**********/
 //STEP 0: INITIALIZATION
 //*********/
 
-function main() {
+$(document).ready(function() {
+  render();
   handleQuizStart();
-}
+  handleAnswerSubmitted();
 
-$(main);
+});
+
+

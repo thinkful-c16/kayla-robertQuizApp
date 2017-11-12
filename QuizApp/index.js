@@ -82,10 +82,8 @@ function render() {
 const introTemplate = function() {
   return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
   <img src='jordandunk.jpg' class='js-splash-page-dunk alt='Michael Jordan dunking the basketball from free throw line'>
-  
     <input type='submit' class='js-the-button' value='Start Quiz'>`;
 };
-
 
 const correctAnswerTemplate = function() {
   return `
@@ -121,7 +119,7 @@ const questionTemplate = function() {
     <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[4]}>
     <label for='choice1' id='js-choice5'>${QUESTIONS[STORE.currentQuestionIndex].answers[4]}</label><br/>
     <input type='submit' class='js-the-button' value='Enter'>
-    <input type='button' class='js-reset-quiz' value='Reset Quiz'>
+    <input type='submit' class='js-reset-quiz' value='Reset Quiz'>
   </form>
     
   `;
@@ -146,10 +144,10 @@ function handleQuizStart() {
 
 }
 
-//not working
 function handleResetButton() {
   $('.js-quiz-container').on('click', '.js-reset-quiz', function(e) {
     e.preventDefault();
+    STORE['userAnswer'] = [];
     handleQuizStart();
     render();
   });

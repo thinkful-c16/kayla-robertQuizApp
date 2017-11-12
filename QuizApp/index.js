@@ -9,7 +9,7 @@ const QUESTIONS = [
   {question: 'What position did he play?', 
     answers: ['Point guard', 'Center', 'Power Forward', 'Shooting guard', 'Small Forward'], 
     correctAnswer: 'Small Forward'},
-  {question: 'Jordan made a NBA omeback in 2001. Which team did he play for?', 
+  {question: 'Jordan made a NBA comeback in 2001. Which team did he play for?', 
     answers: ['Chicago Bulls', 'Washington Wizards', 'Boston Celtics', 'Phoenix Suns', 'Los Angeles Lakers'],
     correctAnswer: 'Washington Wizards'},
   {question: 'In 2010, Michael became majority owner of which NBA team?', 
@@ -72,6 +72,7 @@ function render() {
     $('.feedback').hide();
     $('.score').hide();
     $('.outro').show();
+    $('outro').html(resultsTemplate);
   }
 }
 
@@ -82,7 +83,7 @@ function render() {
 const introTemplate = function() {
   return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
   <img src='jordandunk.jpg' class='js-splash-page-dunk alt='Michael Jordan dunking the basketball from free throw line'>
-    <input type='submit' class='js-the-button' value='Start Quiz'>`;
+    <input type='submit' class='js-the-button' id='startButton' value='Start Quiz'>`;
 };
 
 const correctAnswerTemplate = function() {
@@ -97,6 +98,12 @@ const wrongAnswerTemplate = function() {
   `;
 };
 
+const resultsTemplate = function() {
+  return `
+  <div class='js-outro'>Reset quiz to play again</div>`;
+
+};
+
 // const scoringTemplate = function() {
 //   return `
 //     </div>Question ${currentQuestionIndex+1} of ${QUESTIONS.length}</div>
@@ -105,25 +112,29 @@ const wrongAnswerTemplate = function() {
 
 
 const questionTemplate = function() {
-  return `<div class='js-questions' 'js-question-item-${QUESTIONS[STORE.currentQuestionIndex]}>${QUESTIONS[STORE.currentQuestionIndex].question}</div<br>
+  return `<div class='js-questions' 'js-question-item-${STORE.currentQuestionIndex}>${QUESTIONS[STORE.currentQuestionIndex].question}</div<br>
   <div class='js-answer-choices'>
-  <form class='js-answerSelected'>
-    <input type='radio' name='choices' id='js-choice1' value='${QUESTIONS[STORE.currentQuestionIndex].answers[0]}'>
-    <label for='choice1' id='js-choice1'>${QUESTIONS[STORE.currentQuestionIndex].answers[0]}</label><br/>
-    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[1]}>
-    <label for='choice1' id='js-choice2'>${QUESTIONS[STORE.currentQuestionIndex].answers[1]}</label><br/>
-    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[2]}>
-    <label for='choice1' id='js-choice3'>${QUESTIONS[STORE.currentQuestionIndex].answers[2]}</label><br/>
-    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[3]}>
-    <label for='choice1' id='js-choice4'>${QUESTIONS[STORE.currentQuestionIndex].answers[3]}</label><br/>
-    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[4]}>
-    <label for='choice1' id='js-choice5'>${QUESTIONS[STORE.currentQuestionIndex].answers[4]}</label><br/>
-    <input type='submit' class='js-the-button' value='Enter'>
+  <form id='js-answerSelected'>
+    <input type='radio' name='answers' id='js-choice1' value='${QUESTIONS[STORE.currentQuestionIndex].answers[0]}'>
+    <label for='js-choice1'>${QUESTIONS[STORE.currentQuestionIndex].answers[0]}</label><br/>
+    <input type='radio' name='answers' value='${QUESTIONS[STORE.currentQuestionIndex].answers[1]}'>
+    <label for='js-choice2' id='js-choice2'>${QUESTIONS[STORE.currentQuestionIndex].answers[1]}</label><br/>
+    <input type='radio' name='answers' value='${QUESTIONS[STORE.currentQuestionIndex].answers[2]}'>
+    <label for='js-choice3' id='js-choice3'>${QUESTIONS[STORE.currentQuestionIndex].answers[2]}</label><br/>
+    <input type='radio' name='answers' value='${QUESTIONS[STORE.currentQuestionIndex].answers[3]}'>
+    <label for='js-choice4' id='js-choice4'>${QUESTIONS[STORE.currentQuestionIndex].answers[3]}</label><br/>
+    <input type='radio' name='answers' value='${QUESTIONS[STORE.currentQuestionIndex].answers[4]}'>
+    <label for='js-choice5' id='js-choice5'>${QUESTIONS[STORE.currentQuestionIndex].answers[4]}</label><br/>
+    <input type='submit' id='js-answersSubmit' class='js-the-button' value='Enter'>
     <input type='submit' class='js-reset-quiz' value='Reset Quiz'>
+    </div>Question ${STORE.currentQuestionIndex+1} of ${QUESTIONS.length}</div>
+    <div>${QUESTIONS.correctAnswer}</div>
   </form>
     
   `;
 };
+
+{/* <input type="radio" name="group1" id="r1" value="1" /><label for="r1"> button one</label> */}
 
 {/* <button type="submit" class="search-button">Search</button> */}
 {/* <input type='button' class='js-the-button' value='Enter'>; */}
@@ -135,7 +146,7 @@ const questionTemplate = function() {
 
 function handleQuizStart() {
   changeView('start');
-  $('.js-quiz-container').on('click', '.js-the-button', function(e) {
+  $('.js-quiz-container').on('click', '#startButton', function(e) {
     e.preventDefault();
     changeView('questions');
     STORE.currentQuestionIndex = 0;
@@ -153,30 +164,36 @@ function handleResetButton() {
   });
 }
 
-function handleCurrentQuestions() {
-  if (STORE.currentQuestionIndex < QUESTIONS.length) {
-    STORE.currentQuestionIndex++;
-    render();
-    handleAnswerSubmitted();
-  } else {
-    changeView('results');
-    render();
-  }
 
-}
+
+// $('.search-form').on('submit', function(e){
+//   e.preventDefault();
+//   const searchTerm = $('.search-form').find('.search-query').val();  
 
 function handleAnswerSubmitted() {
-  $('.js-quiz-container').on('click', '.js-the-button', function(e) {
+  $('.js-quiz-container').on('click', '#js-answersSubmit', function(e) {
+    if (STORE.currentQuestionIndex === 5) {
+      handleResults();
+    } else {
+      STORE.currentQuestionIndex++;
+      render();
+    } 
     e.preventDefault();
-    const answer = $('input[name="choices"]:checked').val();
+    const answer = $('js-quiz-container').find('input[name=choices]:checked').val();
     console.log(answer);
-    STORE.userAnswer.push(answer);
-    checkAnswer(answer);
+    // const answer = $('input[name="choices"]:checked').val();
+    // STORE.userAnswer.push(answer);
+    // checkAnswer(answer);
     $('input[type=radio]').prop('checked',false);
-    STORE.currentQuestionIndex++;
-    render();    
+    // if (STORE.currentQuestionIndex === 5) {
+    //   handleResults();
+    // } else {
+    //   STORE.currentQuestionIndex++;
+    //   render();
+    // } 
   });
 }
+
 
 
 /***************/
@@ -184,14 +201,14 @@ function handleAnswerSubmitted() {
 /**************/
 
 
-function getQuestionIndex() {
-  const questionsMapped = QUESTIONS.map(function(question) {
-    return question['question'];
-  });
-  console.log(questionsMapped);
-  questionTemplate(questionsMapped);
-  // return questionsMapped;
-}
+// function getQuestionIndex() {
+//   const questionsMapped = QUESTIONS.map(function(question) {
+//     return question['question'];
+//   });
+//   console.log(questionsMapped);
+//   questionTemplate(questionsMapped);
+//   // return questionsMapped;
+// }
 
 
 function changeView(view) {
@@ -199,13 +216,18 @@ function changeView(view) {
   //grab from event handler
 }
 
-
-function checkAnswer(userAnswer){
-  if (userAnswer === QUESTIONS[STORE.currentQuestionIndex-1]['correctAnswer']) {
-    render();
-  }
-
+function handleResults() {
+  changeView('results');
+  render();
+  // handleAnswerSubmitted();
 }
+
+// function checkAnswer(userAnswer){
+//   if (userAnswer === QUESTIONS[STORE.currentQuestionIndex-1]['correctAnswer']) {
+//     render();
+//   }
+
+// }
 
 //**********/
 //STEP 0: INITIALIZATION
@@ -215,7 +237,7 @@ $(document).ready(function() {
   render();
   handleQuizStart();
   handleAnswerSubmitted();
-  handleCurrentQuestions();
+  handleResults();
   handleResetButton();
 
 });

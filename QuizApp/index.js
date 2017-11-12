@@ -35,8 +35,10 @@ const STORE = {
 //**********/
 
 function render() {
+
   if (STORE.currentView === 'start') {
-    $('.intro').show();
+    // $('.intro').show();
+    $('.js-quiz-container').html(introTemplate);
     $('.questions').hide();
     $('.feedback').hide();
     $('.score').hide();
@@ -44,8 +46,9 @@ function render() {
 
   } 
   else if (STORE.currentView === 'questions') {
+   
+    $('.js-quiz-container').html(questionTemplate);
     $('.intro').hide();
-    $('.questions').show();
     $('.feedback').hide();
     $('.score').show();
     $('.outro').hide();
@@ -57,6 +60,11 @@ function render() {
     $('.feedback').show();
     $('.score').show();
     $('.outro').hide();
+    if (STORE.userAnswer === QUESTIONS.correctAnswer) {
+      $('.js-feedback').html(correctAnswerTemplate);
+    } else {
+      $('.js-feedback').html(wrongAnswerTemplate);
+    }
 
   } else if (STORE.currentView === 'results') {
     $('.intro').hide();
@@ -67,50 +75,59 @@ function render() {
   }
 }
 
-  //render with appropriate HTML elements based on currentView
-  //if 'intro'
-  //if 'questions' then questions
-  //if 'feeback' then feedback
-//   $('main').html(generateTemplate('questions'));
-
-// }
-
-/*****/
+/*******/
 //Template generators//
-/*** */
+/*****/
 
-function generateTemplate(currentView, currentQuestionIndex) {
-  console.log('`generateTemplate` ran');
-  if (currentView === 'start') {
-    return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
-    <img src='jordandunk.jpg' alt='Michael Jordan dunking the basketball from free throw line'>
-    <input type='button' value='Start Quiz'>;
-    `;
-  }
-  if (currentView === 'questions') {
-    return `<div class='js-questions' 'js-question-item-${currentQuestionIndex}>${QUESTIONS[currentQuestionIndex].question}</div<br>
-    <div class='js-question-answer-choices'>
-      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[0]}>
-      <label for='choice1' id='js-choice1'></label><br/>
-      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[1]}>
-      <label for='choice1' id='js-choice2'></label><br/>
-      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[2]}>
-      <label for='choice1' id='js-choice3'></label><br/>
-      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[3]}>
-      <label for='choice1' id='js-choice4'></label><br/>
-      <input type='radio' name='choices' value=${QUESTIONS[currentQuestionIndex].answers[4]}>
-      <label for='choice1' id='js-choice5'></label><br/>
-      <div><<input type='button' value='Enter'>;
-    </div>Question ${currentQuestionIndex+1} of ${QUESTIONS.length}</div>
-    <div>${QUESTIONS.correctAnswer}</div>
-    `;
-  }
-  if (STORE.currentView === 'questions') {
-    return `<div class='js-feedback'<p>Sorry, wrong answer!</p></div>
-    `;
+const introTemplate = function() {
+  return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
+    
+    <input type='button' class='js-the-button' value='Start Quiz'>`;
+};
 
-  }
-}
+{/* <img src='jordandunk.jpg' alt='Michael Jordan dunking the basketball from free throw line'> */}
+
+const correctAnswerTemplate = function() {
+  return `
+  <div class='js-feedback><p>Correct!</p></div>
+  `;
+};
+
+const wrongAnswerTemplate = function() {
+  return `
+  <div class='js-feedback><p>Correct!</p></div>
+  `;
+};
+
+// const scoringTemplate = function() {
+//   return `
+//     </div>Question ${currentQuestionIndex+1} of ${QUESTIONS.length}</div>
+//     <div>${QUESTIONS.correctAnswer}</div>`;
+// };
+
+
+const questionTemplate = function() {
+  return `<div class='js-questions' 'js-question-item-${QUESTIONS[STORE.currentQuestionIndex]}>${QUESTIONS[STORE.currentQuestionIndex].question}</div<br>
+  <div class='js-answer-choices'>
+  <form class='js-answerSelected'>
+    <input type='radio' name='choices' id='js-choice1' value='${QUESTIONS[STORE.currentQuestionIndex].answers[0]}'>
+    <label for='choice1' id='js-choice1'></label><br/>
+    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[1]}>
+    <label for='choice1' id='js-choice2'></label><br/>
+    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[2]}>
+    <label for='choice1' id='js-choice3'></label><br/>
+    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[3]}>
+    <label for='choice1' id='js-choice4'></label><br/>
+    <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[4]}>
+    <label for='choice1' id='js-choice5'></label><br/>
+  </form>
+    <input type='button' class='js-the-button' value='Enter'>
+  `;
+};
+
+{/* <button type="submit" class="search-button">Search</button> */}
+{/* <input type='button' class='js-the-button' value='Enter'>; */}
+
 
 /**********/
 //STEP 2: EVENT LISTENERS(USER INPUT)
@@ -118,13 +135,25 @@ function generateTemplate(currentView, currentQuestionIndex) {
 
 function handleQuizStart() {
   changeView('start');
-  $('.js-userButton').on('click', '.js-the-button', function(e) {
+  $('.js-quiz-container').on('click', '.js-the-button', function(e) {
     e.preventDefault();
-    console.log('`handleQuizStart` ran');
+    console.log('firing?');
     changeView('questions');
-    // console.log(STORE);
+    STORE.currentQuestionIndex = 0;
+    // getQuestionIndex();
     render();
   });
+
+}
+
+function handleCurrentQuestions() {
+  if (STORE.currentQuestionIndex < QUESTIONS.length) {
+    STORE.currentQuestionIndex++;
+    render();
+    handleAnswerSubmitted();
+  } else {
+    handleQuizStart();
+  }
 
 }
 
@@ -143,44 +172,31 @@ function handleAnswerSubmitted() {
 
 
 /***************/
-//STEP 3: STATE CHANGE FUNCTIONS(STORE)
+//STEP 3: Helper Functions
 /**************/
 
 
 function getQuestionIndex() {
-  const questionIndex = QUESTIONS.map(function(question, index) {
-    console.log(question.question, index);
+  const questionsMapped = QUESTIONS.map(function(question) {
+    return question['question'];
   });
+  console.log(questionsMapped);
+  questionTemplate(questionsMapped);
+  // return questionsMapped;
 }
 
-console.log(getQuestionIndex);
-
-// value['question']);
-// generateTemplate(questionIndex);
-// {
-//   generateTemplate(question, currentQuestionIndex); 
-// });
-
-  
-// function getAnswerIndex() {
-//   const answers = QUESTIONS[currentQuestionIndex].answers.map(value => value)
-//   }
-//   return answers;
-//   //access currentQuestionIndex.answers is an array
-// //map and return the label and input
-// //${QUESTIONS[currentQuestionIndex].answers
-// }
 
 function changeView(view) {
   STORE.currentView = view;
   //grab from event handler
 }
 
-function renderQuestions(){}
 
 function checkAnswer(userAnswer){
-  //if userAnswer === QUESTIONS.correctAnswer, 
-  // const correctAnswer = QUESTIONS.map(function(answer, index))
+  if (userAnswer === QUESTIONS[STORE.currentQuestionIndex-1]['correctAnswer']) {
+    render();
+  }
+
 }
 
 //**********/
@@ -191,6 +207,7 @@ $(document).ready(function() {
   render();
   handleQuizStart();
   handleAnswerSubmitted();
+  handleCurrentQuestions();
 
 });
 

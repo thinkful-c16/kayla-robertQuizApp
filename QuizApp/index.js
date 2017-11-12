@@ -82,7 +82,7 @@ function render() {
 const introTemplate = function() {
   return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
     
-    <input type='button' class='js-the-button' value='Start Quiz'>`;
+    <input type='submit' class='js-the-button' value='Start Quiz'>`;
 };
 
 {/* <img src='jordandunk.jpg' alt='Michael Jordan dunking the basketball from free throw line'> */}
@@ -111,17 +111,19 @@ const questionTemplate = function() {
   <div class='js-answer-choices'>
   <form class='js-answerSelected'>
     <input type='radio' name='choices' id='js-choice1' value='${QUESTIONS[STORE.currentQuestionIndex].answers[0]}'>
-    <label for='choice1' id='js-choice1'></label><br/>
+    <label for='choice1' id='js-choice1'>${QUESTIONS[STORE.currentQuestionIndex].answers[0]}</label><br/>
     <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[1]}>
-    <label for='choice1' id='js-choice2'></label><br/>
+    <label for='choice1' id='js-choice2'>${QUESTIONS[STORE.currentQuestionIndex].answers[1]}</label><br/>
     <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[2]}>
-    <label for='choice1' id='js-choice3'></label><br/>
+    <label for='choice1' id='js-choice3'>${QUESTIONS[STORE.currentQuestionIndex].answers[2]}</label><br/>
     <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[3]}>
-    <label for='choice1' id='js-choice4'></label><br/>
+    <label for='choice1' id='js-choice4'>${QUESTIONS[STORE.currentQuestionIndex].answers[3]}</label><br/>
     <input type='radio' name='choices' value=${QUESTIONS[STORE.currentQuestionIndex].answers[4]}>
-    <label for='choice1' id='js-choice5'></label><br/>
+    <label for='choice1' id='js-choice5'>${QUESTIONS[STORE.currentQuestionIndex].answers[4]}</label><br/>
+    <input type='submit' class='js-the-button' value='Enter'>
+    <input type='button' class='js-reset-quiz' value='Reset Quiz'>
   </form>
-    <input type='button' class='js-the-button' value='Enter'>
+    
   `;
 };
 
@@ -146,6 +148,15 @@ function handleQuizStart() {
 
 }
 
+//not working
+function handleResetButton() {
+  $('form').on('click', '.js-reset-quiz', function(e) {
+    e.preventDefault();
+    console.log('?');
+    handleQuizStart();
+  });
+}
+
 function handleCurrentQuestions() {
   if (STORE.currentQuestionIndex < QUESTIONS.length) {
     STORE.currentQuestionIndex++;
@@ -157,6 +168,7 @@ function handleCurrentQuestions() {
 
 }
 
+//not working
 function handleAnswerSubmitted() {
   $('.js-userButton').on('click', '.js-the-button', function(e) {
     e.preventDefault();
@@ -208,6 +220,7 @@ $(document).ready(function() {
   handleQuizStart();
   handleAnswerSubmitted();
   handleCurrentQuestions();
+  handleResetButton();
 
 });
 

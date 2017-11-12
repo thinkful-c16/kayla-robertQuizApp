@@ -61,9 +61,9 @@ function render() {
     $('.score').show();
     $('.outro').hide();
     if (STORE.userAnswer === QUESTIONS.correctAnswer) {
-      $('.js-feedback').html(correctAnswerTemplate);
+      $('.feedback').html(correctAnswerTemplate);
     } else {
-      $('.js-feedback').html(wrongAnswerTemplate);
+      $('.feedback').html(wrongAnswerTemplate);
     }
 
   } else if (STORE.currentView === 'results') {
@@ -81,11 +81,11 @@ function render() {
 
 const introTemplate = function() {
   return `<h1>His Airness, Michael Jordan:<br> How much do you know?</h1>
-    
+  <img src='jordandunk.jpg' class='js-splash-page-dunk alt='Michael Jordan dunking the basketball from free throw line'>
+  
     <input type='submit' class='js-the-button' value='Start Quiz'>`;
 };
 
-{/* <img src='jordandunk.jpg' alt='Michael Jordan dunking the basketball from free throw line'> */}
 
 const correctAnswerTemplate = function() {
   return `
@@ -95,7 +95,7 @@ const correctAnswerTemplate = function() {
 
 const wrongAnswerTemplate = function() {
   return `
-  <div class='js-feedback><p>Correct!</p></div>
+  <div class='js-feedback><p>Sorry, that's incorrect.</p></div>
   `;
 };
 
@@ -139,10 +139,8 @@ function handleQuizStart() {
   changeView('start');
   $('.js-quiz-container').on('click', '.js-the-button', function(e) {
     e.preventDefault();
-    console.log('firing?');
     changeView('questions');
     STORE.currentQuestionIndex = 0;
-    // getQuestionIndex();
     render();
   });
 
@@ -150,10 +148,10 @@ function handleQuizStart() {
 
 //not working
 function handleResetButton() {
-  $('form').on('click', '.js-reset-quiz', function(e) {
+  $('.js-quiz-container').on('click', '.js-reset-quiz', function(e) {
     e.preventDefault();
-    console.log('?');
     handleQuizStart();
+    render();
   });
 }
 
@@ -163,21 +161,21 @@ function handleCurrentQuestions() {
     render();
     handleAnswerSubmitted();
   } else {
-    handleQuizStart();
+    changeView('results');
+    render();
   }
 
 }
 
-//not working
 function handleAnswerSubmitted() {
-  $('.js-userButton').on('click', '.js-the-button', function(e) {
+  $('.js-quiz-container').on('click', '.js-the-button', function(e) {
     e.preventDefault();
-    const answer = $('input[name=choices]:checked').val();
+    const answer = $('input[name="choices"]:checked').val();
+    console.log(answer);
     STORE.userAnswer.push(answer);
     checkAnswer(answer);
     $('input[type=radio]').prop('checked',false);
     STORE.currentQuestionIndex++;
-    changeView('questions');
     render();    
   });
 }

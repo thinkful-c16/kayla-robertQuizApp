@@ -16,10 +16,17 @@ h1 {
     max-width: 100%;
 }
 
-.js-the-button, .js-reset-page {
+/* .js-the-button, .js-reset-quiz {
     width: 100px;
     height: 20px;
     font-size: 20px;
     text-align: center;
 
+} */
+
+input[submit] {
+    width: 100px;
+    height: 20px;
+    font-size: 20px;
+    text-align: center;
 }

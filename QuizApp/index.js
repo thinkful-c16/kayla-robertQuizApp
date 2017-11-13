@@ -61,18 +61,19 @@ function render() {
     $('.score').show();
     $('.outro').hide();
     if (STORE.userAnswer === QUESTIONS.correctAnswer) {
-      $('.feedback').html(correctAnswerTemplate);
+      $('.js-feedback').html(correctAnswerTemplate);
     } else {
-      $('.feedback').html(wrongAnswerTemplate);
+      $('.js-feedback').html(wrongAnswerTemplate);
     }
 
   } else if (STORE.currentView === 'results') {
+    $('.outro').show();
+    $('.outro').html(resultsTemplate);
     $('.intro').hide();
     $('.questions').hide();
     $('.feedback').hide();
     $('.score').hide();
-    $('.outro').show();
-    $('outro').html(resultsTemplate);
+
   }
 }
 
@@ -126,18 +127,13 @@ const questionTemplate = function() {
     <input type='radio' name='answers' value='${QUESTIONS[STORE.currentQuestionIndex].answers[4]}'>
     <label for='js-choice5' id='js-choice5'>${QUESTIONS[STORE.currentQuestionIndex].answers[4]}</label><br/>
     <input type='submit' id='js-answersSubmit' class='js-the-button' value='Enter'>
-    <input type='submit' class='js-reset-quiz' value='Reset Quiz'>
+    <input type='submit' id='js-reset-quiz' value='Reset Quiz'>
     </div>Question ${STORE.currentQuestionIndex+1} of ${QUESTIONS.length}</div>
-    <div>${QUESTIONS.correctAnswer}</div>
+    <div>Curent score: ${handleScore()}%</div>
   </form>
     
   `;
 };
-
-{/* <input type="radio" name="group1" id="r1" value="1" /><label for="r1"> button one</label> */}
-
-{/* <button type="submit" class="search-button">Search</button> */}
-{/* <input type='button' class='js-the-button' value='Enter'>; */}
 
 
 /**********/
@@ -156,7 +152,7 @@ function handleQuizStart() {
 }
 
 function handleResetButton() {
-  $('.js-quiz-container').on('click', '.js-reset-quiz', function(e) {
+  $('.js-quiz-container').on('click', '#js-reset-quiz', function(e) {
     e.preventDefault();
     STORE['userAnswer'] = [];
     handleQuizStart();
@@ -164,11 +160,6 @@ function handleResetButton() {
   });
 }
 
-
-
-// $('.search-form').on('submit', function(e){
-//   e.preventDefault();
-//   const searchTerm = $('.search-form').find('.search-query').val();  
 
 function handleAnswerSubmitted() {
   $('.js-quiz-container').on('click', '#js-answersSubmit', function(e) {
@@ -201,16 +192,6 @@ function handleAnswerSubmitted() {
 /**************/
 
 
-// function getQuestionIndex() {
-//   const questionsMapped = QUESTIONS.map(function(question) {
-//     return question['question'];
-//   });
-//   console.log(questionsMapped);
-//   questionTemplate(questionsMapped);
-//   // return questionsMapped;
-// }
-
-
 function changeView(view) {
   STORE.currentView = view;
   //grab from event handler
@@ -222,12 +203,10 @@ function handleResults() {
   // handleAnswerSubmitted();
 }
 
-// function checkAnswer(userAnswer){
-//   if (userAnswer === QUESTIONS[STORE.currentQuestionIndex-1]['correctAnswer']) {
-//     render();
-//   }
-
-// }
+function handleScore() {
+  const percentage = STORE.currentScore/5*100;
+  return percentage;
+}
 
 //**********/
 //STEP 0: INITIALIZATION
@@ -237,8 +216,8 @@ $(document).ready(function() {
   render();
   handleQuizStart();
   handleAnswerSubmitted();
-  handleResults();
   handleResetButton();
+  handleScore();
 
 });
 

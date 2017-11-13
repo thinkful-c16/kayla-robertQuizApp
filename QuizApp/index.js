@@ -162,30 +162,31 @@ function handleResetButton() {
 
 
 function handleAnswerSubmitted() {
-  const answer = $('input:radio').val();
-  console.log(answer);
   $('.js-quiz-container').on('click', '#js-answersSubmit', function(e) {
-    if (STORE.currentQuestionIndex === 5) {
+    e.preventDefault();    
+    if (STORE.currentQuestionIndex === QUESTIONS.length) {
       handleResults();
-    } else {
-      STORE.currentQuestionIndex++;
-      render();
     } 
-    e.preventDefault();
-    // const answer = $('input[name=answers]:checked').on('submit').val();
-    const answer = $('input:radio').on('click', function(e) {
-      console.log(e.currentTarget.value);
-    });
-    // console.log(answer);
-    // const answer = $('input[name="choices"]:checked').val();
-    // STORE.userAnswer.push(answer);
-    // checkAnswer(answer);
-    $('input[type=radio]').prop('checked',false);
-
+    else {
+      const answer = $('input[name=answers]:checked').val() 
+        console.log(answer);
+        $('input[type=radio]').prop('checked',false); 
+        STORE.currentQuestionIndex++;
+        render();
+      }
   });
 }
+// console.log(answer);
+// const answer = $('input[name="choices"]:checked').val();
+// STORE.userAnswer.push(answer);
+// checkAnswer(answer);
 
+// const answer = $('input[name=answers]:checked').on('submit').val();
+// const answer = $('input:radio').on('click', function(e) {
+//   console.log(e.currentTarget.value);
 
+//bugs: crashes at the end
+//doesnt get input value of first questions
 
 /***************/
 //STEP 3: Helper Functions

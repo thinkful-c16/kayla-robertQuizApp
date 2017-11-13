@@ -162,6 +162,8 @@ function handleResetButton() {
 
 
 function handleAnswerSubmitted() {
+  const answer = $('input:radio').val();
+  console.log(answer);
   $('.js-quiz-container').on('click', '#js-answersSubmit', function(e) {
     if (STORE.currentQuestionIndex === 5) {
       handleResults();
@@ -170,18 +172,16 @@ function handleAnswerSubmitted() {
       render();
     } 
     e.preventDefault();
-    const answer = $('js-quiz-container').find('input[name=choices]:checked').val();
-    console.log(answer);
+    // const answer = $('input[name=answers]:checked').on('submit').val();
+    const answer = $('input:radio').on('click', function(e) {
+      console.log(e.currentTarget.value);
+    });
+    // console.log(answer);
     // const answer = $('input[name="choices"]:checked').val();
     // STORE.userAnswer.push(answer);
     // checkAnswer(answer);
     $('input[type=radio]').prop('checked',false);
-    // if (STORE.currentQuestionIndex === 5) {
-    //   handleResults();
-    // } else {
-    //   STORE.currentQuestionIndex++;
-    //   render();
-    // } 
+
   });
 }
 

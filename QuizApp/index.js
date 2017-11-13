@@ -168,24 +168,18 @@ function handleAnswerSubmitted() {
       handleResults();
     } 
     else {
-      const answer = $('input[name=answers]:checked').val() 
-        console.log(answer);
-        $('input[type=radio]').prop('checked',false); 
-        STORE.currentQuestionIndex++;
-        render();
-      }
+      const answer = $('input[name=answers]:checked').val(); 
+      console.log(answer);
+      STORE.userAnswer.push(answer);
+      $('input[type=radio]').prop('checked',false); 
+      STORE.currentQuestionIndex++;
+      render();
+    }
   });
 }
-// console.log(answer);
-// const answer = $('input[name="choices"]:checked').val();
-// STORE.userAnswer.push(answer);
-// checkAnswer(answer);
 
-// const answer = $('input[name=answers]:checked').on('submit').val();
-// const answer = $('input:radio').on('click', function(e) {
-//   console.log(e.currentTarget.value);
 
-//bugs: crashes at the end
+//bugs: results page will not render.
 //doesnt get input value of first questions
 
 /***************/
